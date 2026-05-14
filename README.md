@@ -28,3 +28,7 @@ git remote set-url origin https://github.com/<you>/<new-repo-name>.git
 ## Contents
 
 Add PDFs, images, HTML, or Markdown here. For a simple browsable site, keep an `index.html` at the repo root (or configure Vercel’s “Root Directory” to a subfolder if you prefer).
+
+| File | Description |
+|------|-------------|
+| `canva-cheat-sheet.html` | Brand reference for Canva: palette, typography, components. Open in a browser; path on deploy is `/canva-cheat-sheet.html`. |

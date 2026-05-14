@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Canva Cheat Sheet — Ritual Runway</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #FDFAF6;
+  --ink:       #26262B;
+  --soft:      #5A4F47;
+  --line:      #D8D3C9;
+  --line-soft: #E8E1D5;
+  --mauve:     #6F5E73;
+  --mauve-lt:  #9B8EA0;
+  --card:      #FFFFFF;
+  --header:    #2A2A2E;
+  --dark-bg:   #13131A;
+  --dark-card: #1E1E28;
+  --dark-fg:   #EEEDF5;
+  --dark-mauve:#D9CFD8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg); color: var(--ink);
+  font-family: "Jost", sans-serif; font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh; padding: 32px 24px 80px;
+}
+.page { max-width: 1100px; margin: 0 auto; }
+
+/* ── HEADER ── */
+.sheet-header {
+  border-bottom: 1px solid var(--line); padding-bottom: 24px; margin-bottom: 32px;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+  flex-wrap: wrap;
+}
+.sheet-title { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 38px; line-height: 1; color: var(--ink); margin-bottom: 6px; }
+.sheet-sub { font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--soft); }
+.sheet-stamp {
+  background: var(--mauve); color: #FFF; padding: 8px 16px; border-radius: 999px;
+  font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+}
+
+/* ── GRID ── */
+.grid {
+  display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px;
+}
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 22px; display: flex; flex-direction: column; gap: 14px;
+  break-inside: avoid;
+}
+.col-12 { grid-column: span 12; }
+.col-8 { grid-column: span 8; }
+.col-6 { grid-column: span 6; }
+.col-4 { grid-column: span 4; }
+.col-3 { grid-column: span 3; }
+
+.card-head {
+  display: flex; align-items: center; gap: 10px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line-soft);
+}
+.card-num {
+  width: 22px; height: 22px; border-radius: 5px;
+  background: rgba(111,94,115,0.12); color: var(--mauve);
+  font-family: "IBM Plex Mono", monospace; font-size: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.card-title { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 17px; color: var(--ink); }
+.card-rule {
+  margin-left: auto;
+  font-family: "IBM Plex Mono", monospace; font-size: 8.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--soft);
+}
+
+/* ── COLOR SWATCHES ── */
+.swatch-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.swatch {
+  border-radius: 8px; overflow: hidden; border: 1px solid var(--line-soft);
+}
+.sw-fill { height: 64px; }
+.sw-meta { padding: 9px 11px; background: #FFF; }
+.sw-name { font-size: 12px; font-weight: 400; color: var(--ink); margin-bottom: 2px; }
+.sw-hex { font-family: "IBM Plex Mono", monospace; font-size: 10px; color: var(--soft); letter-spacing: 0.04em; }
+.sw-use { font-family: "IBM Plex Mono", monospace; font-size: 8.5px; letter-spacing: 0.08em; color: var(--mauve); text-transform: uppercase; margin-top: 4px; }
+
+/* ── TYPE SAMPLES ── */
+.type-row {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 12px 0; border-bottom: 1px dashed var(--line-soft);
+}
+.type-row:last-child { border-bottom: none; }
+.type-info { font-family: "IBM Plex Mono", monospace; font-size: 9px; color: var(--soft); letter-spacing: 0.06em; text-align: right; flex-shrink: 0; line-height: 1.5; }
+.type-info b { color: var(--ink); font-weight: 400; }
+
+/* ── LOGO PREVIEW ── */
+.logo-preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.logo-prev {
+  border-radius: 10px; padding: 28px 16px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border: 1px solid var(--line-soft); min-height: 130px;
+}
+.logo-prev.dark { background: var(--dark-card); }
+.logo-prev.light { background: #FDFAF6; }
+.logo-mark {
+  font-family: "Cormorant Garamond", serif; font-style: italic;
+  font-size: 50px; line-height: 1; letter-spacing: -0.02em; font-weight: 500;
+}
+.logo-caption {
+  margin-top: 14px; font-family: "IBM Plex Mono", monospace; font-size: 8.5px;
+  letter-spacing: 0.14em; text-transform: uppercase;
+}
+
+/* ── SIZES TABLE ── */
+.sizes-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.sizes-table th {
+  font-family: "IBM Plex Mono", monospace; font-size: 8.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--soft); font-weight: 400;
+  text-align: left; padding: 8px 8px 8px 0; border-bottom: 1px solid var(--line-soft);
+}
+.sizes-table td {
+  padding: 9px 8px 9px 0; border-bottom: 1px solid var(--line-soft);
+  color: var(--ink); font-weight: 300; font-size: 11.5px;
+}
+.sizes-table td.use { color: var(--soft); }
+.sizes-table td.px {
+  font-family: "IBM Plex Mono", monospace; color: var(--mauve);
+  text-align: right; padding-right: 0;
+}
+.sizes-table tr:last-child td { border-bottom: none; }
+
+/* ── COMPONENT EXAMPLES ── */
+.comp-row { display: flex; flex-direction: column; gap: 8px; }
+.comp-label { font-family: "IBM Plex Mono", monospace; font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); }
+
+.btn-mauve {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--mauve); color: #FFF; border-radius: 999px;
+  padding: 11px 22px;
+  font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 500;
+  width: fit-content;
+}
+.btn-outline {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; color: var(--mauve);
+  border: 1px solid var(--mauve); border-radius: 999px;
+  padding: 10px 21px;
+  font-family: "IBM Plex Mono", monospace; font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 500;
+  width: fit-content;
+}
+.demo-card-light {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px 16px;
+}
+.demo-card-dark {
+  background: var(--dark-card); border: 1px solid #32323F; border-radius: 12px;
+  padding: 14px 16px; color: var(--dark-fg);
+}
+.demo-eyebrow {
+  font-family: "IBM Plex Mono", monospace; font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--soft); margin-bottom: 4px;
+}
+.demo-card-dark .demo-eyebrow { color: #9A9AAF; }
+.demo-amount {
+  font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 26px;
+  color: var(--ink); line-height: 1;
+}
+.demo-card-dark .demo-amount { color: var(--dark-fg); }
+
+/* ── DO/DON'T ── */
+.dodont { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.dd-cell {
+  border-radius: 8px; padding: 10px 12px;
+  font-size: 11.5px; line-height: 1.5; color: var(--ink); font-weight: 300;
+}
+.dd-cell.do { background: rgba(122,155,120,0.1); border: 1px solid rgba(122,155,120,0.3); }
+.dd-cell.dont { background: rgba(196,144,154,0.1); border: 1px solid rgba(196,144,154,0.3); }
+.dd-label {
+  font-family: "IBM Plex Mono", monospace; font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; font-weight: 500; margin-bottom: 6px;
+}
+.dd-cell.do .dd-label { color: #5A7F58; }
+.dd-cell.dont .dd-label { color: #A45F70; }
+
+/* ── CANVA NOTES ── */
+.canva-note {
+  background: rgba(111,94,115,0.06); border-left: 3px solid var(--mauve);
+  padding: 14px 16px; border-radius: 4px;
+  font-size: 12px; line-height: 1.6; color: var(--ink); font-weight: 300;
+}
+.canva-note b { color: var(--mauve); font-weight: 500; }
+
+/* ── FOOTER ── */
+.sheet-footer {
+  margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  flex-wrap: wrap;
+  font-family: "IBM Plex Mono", monospace; font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--soft);
+}
+.footer-logo {
+  font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 18px;
+  text-transform: none; letter-spacing: 0;
+}
+.footer-logo .r { color: var(--mauve); }
+
+@media print {
+  body { padding: 20px; }
+  .card { break-inside: avoid; }
+}
+
+@media (max-width: 900px) {
+  .col-8, .col-6, .col-4, .col-3 { grid-column: span 12; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="sheet-header">
+    <div>
+      <div class="sheet-title">Canva Cheat Sheet</div>
+      <div class="sheet-sub">Ritual Runway · v1 · Print or save as PDF</div>
+    </div>
+    <div class="sheet-stamp">For Canva designs</div>
+  </div>
+
+  <div class="grid">
+
+    <!-- ── COLORS (col-8) ── -->
+    <div class="card col-8">
+      <div class="card-head">
+        <div class="card-num">01</div>
+        <div class="card-title">Color Palette</div>
+        <div class="card-rule">Paste hex codes into Canva color picker</div>
+      </div>
+
+      <!-- Primary -->
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:10px">Brand mauves</div>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div class="sw-fill" style="background:#6F5E73"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Deep Mauve</div>
+              <div class="sw-hex">#6F5E73</div>
+              <div class="sw-use">Logo · headlines · light bg</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#9B8EA0"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Primary Mauve</div>
+              <div class="sw-hex">#9B8EA0</div>
+              <div class="sw-use">Buttons · accents · "Ritual" word</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#B5AABD"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Soft Mauve</div>
+              <div class="sw-hex">#B5AABD</div>
+              <div class="sw-use">Primary on dark · subtle accent</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#D9CFD8"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Mauve Pearl</div>
+              <div class="sw-hex">#D9CFD8</div>
+              <div class="sw-use">Logo on dark · highlights</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Neutrals -->
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:10px">Neutrals — light theme</div>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div class="sw-fill" style="background:#FDFAF6;border-bottom:1px solid var(--line)"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Parchment</div>
+              <div class="sw-hex">#FDFAF6</div>
+              <div class="sw-use">Card background</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#F2F0F5"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Mist</div>
+              <div class="sw-hex">#F2F0F5</div>
+              <div class="sw-use">Page background</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#26262B"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Ink</div>
+              <div class="sw-hex">#26262B</div>
+              <div class="sw-use">Primary text on light</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#5A4F47"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Muted Brown</div>
+              <div class="sw-hex">#5A4F47</div>
+              <div class="sw-use">Secondary text on light</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dark Neutrals -->
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--soft);margin-bottom:10px">Neutrals — dark theme</div>
+        <div class="swatch-grid">
+          <div class="swatch">
+            <div class="sw-fill" style="background:#13131A"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Charcoal</div>
+              <div class="sw-hex">#13131A</div>
+              <div class="sw-use">Page background</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#1E1E28"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Slate</div>
+              <div class="sw-hex">#1E1E28</div>
+              <div class="sw-use">Card background</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#2A2A2E"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Header</div>
+              <div class="sw-hex">#2A2A2E</div>
+              <div class="sw-use">Top nav · always dark</div>
+            </div>
+          </div>
+          <div class="swatch">
+            <div class="sw-fill" style="background:#EEEDF5"></div>
+            <div class="sw-meta">
+              <div class="sw-name">Pearl White</div>
+              <div class="sw-hex">#EEEDF5</div>
+              <div class="sw-use">Primary text on dark</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FONTS (col-4) ── -->
+    <div class="card col-4">
+      <div class="card-head">
+        <div class="card-num">02</div>
+        <div class="card-title">Fonts</div>
+        <div class="card-rule">All in Canva</div>
+      </div>
+
+      <div class="canva-note">
+        All three fonts are <b>free in Canva</b>. Search by exact name in Canva's font picker.
+      </div>
+
+      <div class="type-row">
+        <div style="font-family:'Cormorant Garamond';font-style:italic;font-size:30px;line-height:1">Aa <em>Ritual</em></div>
+        <div class="type-info">
+          <b>Cormorant Garamond</b><br>
+          Italic · 400/500<br>
+          Headlines · brand
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div style="font-family:'Jost';font-weight:300;font-size:18px;line-height:1.1">Aa Body text</div>
+        <div class="type-info">
+          <b>Jost</b><br>
+          Light · 300/400<br>
+          Body · UI
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div style="font-family:'IBM Plex Mono';font-size:13px;letter-spacing:0.16em;text-transform:uppercase">AA LABEL</div>
+        <div class="type-info">
+          <b>IBM Plex Mono</b><br>
+          Regular · 400<br>
+          Labels · numbers
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LOGO + COLOR USE (col-6) ── -->
+    <div class="card col-6">
+      <div class="card-head">
+        <div class="card-num">03</div>
+        <div class="card-title">Logo Color</div>
+        <div class="card-rule">Same artwork, different fill</div>
+      </div>
+
+      <div class="logo-preview-grid">
+        <div class="logo-prev dark">
+          <div class="logo-mark" style="color:#D9CFD8">RR</div>
+          <div class="logo-caption" style="color:#D9CFD8">#D9CFD8</div>
+        </div>
+        <div class="logo-prev light">
+          <div class="logo-mark" style="color:#6F5E73">RR</div>
+          <div class="logo-caption" style="color:#6F5E73">#6F5E73</div>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color:var(--soft);line-height:1.6;font-weight:300">
+        On dark backgrounds use <b style="color:var(--ink)">#D9CFD8 Mauve Pearl</b>. On light/parchment use <b style="color:var(--ink)">#6F5E73 Deep Mauve</b>. Both are the same logo — only the fill color changes.
+      </div>
+    </div>
+
+    <!-- ── LOGO SIZES (col-6) ── -->
+    <div class="card col-6">
+      <div class="card-head">
+        <div class="card-num">04</div>
+        <div class="card-title">Do I need multiple sizes?</div>
+        <div class="card-rule">Short answer: yes</div>
+      </div>
+
+      <div style="font-size:12px;color:var(--soft);line-height:1.6;font-weight:300;margin-bottom:4px">
+        Have your designer deliver one <b style="color:var(--ink)">vector SVG</b> for each color version, then export these PNG sizes from it.
+      </div>
+
+      <table class="sizes-table">
+        <thead>
+          <tr><th>Use</th><th>Size (px)</th><th style="text-align:right">Format</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Favicon</td><td class="use">16, 32</td><td class="px">.ico + .png</td></tr>
+          <tr><td>Apple touch icon</td><td class="use">180</td><td class="px">.png</td></tr>
+          <tr><td>PWA / app icon</td><td class="use">192, 512</td><td class="px">.png</td></tr>
+          <tr><td>App store</td><td class="use">1024</td><td class="px">.png</td></tr>
+          <tr><td>Social profile</td><td class="use">400, 800</td><td class="px">.png</td></tr>
+          <tr><td>Marketing hero</td><td class="use">Any</td><td class="px">.svg</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── COMPONENTS (col-6) ── -->
+    <div class="card col-6">
+      <div class="card-head">
+        <div class="card-num">05</div>
+        <div class="card-title">Buttons</div>
+        <div class="card-rule">Pill shape · uppercase mono</div>
+      </div>
+
+      <div class="comp-row">
+        <div class="comp-label">Primary CTA</div>
+        <div class="btn-mauve">Start Free Trial</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--soft);letter-spacing:0.04em">
+          BG #9B8EA0 · TEXT #FFF · 24px radius · IBM Plex Mono 10px · 0.18em tracking
+        </div>
+      </div>
+
+      <div class="comp-row" style="margin-top:14px">
+        <div class="comp-label">Secondary CTA</div>
+        <div class="btn-outline">Log In</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--soft);letter-spacing:0.04em">
+          BG transparent · BORDER #9B8EA0 · TEXT #9B8EA0
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CARDS (col-6) ── -->
+    <div class="card col-6">
+      <div class="card-head">
+        <div class="card-num">06</div>
+        <div class="card-title">Cards</div>
+        <div class="card-rule">12px radius · 1px border</div>
+      </div>
+
+      <div class="comp-row">
+        <div class="comp-label">Light card</div>
+        <div class="demo-card-light">
+          <div class="demo-eyebrow">Paycheck 1</div>
+          <div class="demo-amount">$1,240</div>
+        </div>
+      </div>
+
+      <div class="comp-row" style="margin-top:14px">
+        <div class="comp-label">Dark card</div>
+        <div class="demo-card-dark">
+          <div class="demo-eyebrow">Paycheck 1</div>
+          <div class="demo-amount">$1,240</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TEXT HIERARCHY (col-6) ── -->
+    <div class="card col-6">
+      <div class="card-head">
+        <div class="card-num">07</div>
+        <div class="card-title">Text Hierarchy</div>
+        <div class="card-rule">Sizes in points (Canva)</div>
+      </div>
+
+      <table class="sizes-table">
+        <thead><tr><th>Style</th><th>Font</th><th style="text-align:right">Size</th></tr></thead>
+        <tbody>
+          <tr><td><span style="font-family:'Cormorant Garamond';font-style:italic;font-size:18px">Hero headline</span></td><td class="use">Cormorant Italic</td><td class="px">48–64pt</td></tr>
+          <tr><td><span style="font-family:'Cormorant Garamond';font-style:italic;font-size:15px">Section title</span></td><td class="use">Cormorant Italic</td><td class="px">28–36pt</td></tr>
+          <tr><td><span style="font-family:'Jost';font-weight:500;font-size:13px">Subtitle</span></td><td class="use">Jost Medium</td><td class="px">16–18pt</td></tr>
+          <tr><td><span style="font-family:'Jost';font-weight:300;font-size:13px">Body text</span></td><td class="use">Jost Light</td><td class="px">12–14pt</td></tr>
+          <tr><td><span style="font-family:'IBM Plex Mono';font-size:11px;letter-spacing:0.16em;text-transform:uppercase">EYEBROW LABEL</span></td><td class="use">Plex Mono</td><td class="px">9–11pt</td></tr>
+          <tr><td><span style="font-family:'IBM Plex Mono';font-size:14px">$1,240</span></td><td class="use">Plex Mono</td><td class="px">14–22pt</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── SIGNATURE MOVE (col-6) ── -->
+    <div class="card col-6">
+      <div class="card-head">
+        <div class="card-num">08</div>
+        <div class="card-title">The "Ritual Runway" lockup</div>
+        <div class="card-rule">Brand signature</div>
+      </div>
+
+      <div style="background:var(--card);padding:24px 18px;border-radius:8px;border:1px solid var(--line-soft);text-align:center">
+        <span style="font-family:'Cormorant Garamond';font-style:italic;font-size:32px;line-height:1">
+          <span style="color:#9B8EA0">Ritual</span> <span style="color:#26262B">Runway</span>
+        </span>
+      </div>
+
+      <div style="font-size:12px;color:var(--soft);line-height:1.6;font-weight:300">
+        <b style="color:var(--ink);font-weight:400">"Ritual" is always mauve.</b> "Runway" is always ink (or pearl white on dark). One italic line, Cormorant Garamond, single space between words. Never stack vertically except in tight square spaces (avatars, app icons).
+      </div>
+    </div>
+
+    <!-- ── DO / DON'T (col-12) ── -->
+    <div class="card col-12">
+      <div class="card-head">
+        <div class="card-num">09</div>
+        <div class="card-title">Quick Rules</div>
+        <div class="card-rule">Print this side</div>
+      </div>
+
+      <div class="dodont">
+        <div class="dd-cell do">
+          <div class="dd-label">✓ Do</div>
+          Use Cormorant italic for anything emotional or branded (headlines, "Ritual", taglines)
+        </div>
+        <div class="dd-cell dont">
+          <div class="dd-label">✗ Don't</div>
+          Mix Cormorant with another serif. One serif only.
+        </div>
+
+        <div class="dd-cell do">
+          <div class="dd-label">✓ Do</div>
+          Use IBM Plex Mono for all dollar amounts, dates, labels, and small caps
+        </div>
+        <div class="dd-cell dont">
+          <div class="dd-label">✗ Don't</div>
+          Use Plex Mono for body paragraphs — too dense to read.
+        </div>
+
+        <div class="dd-cell do">
+          <div class="dd-label">✓ Do</div>
+          Stick to the mauve family. If you need a second color, dim or lighten an existing mauve.
+        </div>
+        <div class="dd-cell dont">
+          <div class="dd-label">✗ Don't</div>
+          Introduce green, gold, pink, blue, or any new hue. Mauve family only.
+        </div>
+
+        <div class="dd-cell do">
+          <div class="dd-label">✓ Do</div>
+          Round all rectangles to 12px. Round all buttons to 999px (full pill).
+        </div>
+        <div class="dd-cell dont">
+          <div class="dd-label">✗ Don't</div>
+          Use sharp corners or 4px micro-rounded boxes. Inconsistent radii break the feel.
+        </div>
+
+        <div class="dd-cell do">
+          <div class="dd-label">✓ Do</div>
+          Leave generous whitespace. 24–32px padding inside cards. Lots of air.
+        </div>
+        <div class="dd-cell dont">
+          <div class="dd-label">✗ Don't</div>
+          Pack content edge-to-edge. The brand is "calm + intentional" — let it breathe.
+        </div>
+
+        <div class="dd-cell do">
+          <div class="dd-label">✓ Do</div>
+          Use lowercase letterspacing 0.16–0.18em on UPPERCASE Plex Mono labels.
+        </div>
+        <div class="dd-cell dont">
+          <div class="dd-label">✗ Don't</div>
+          Use ALL CAPS in any other font. Only Plex Mono does uppercase.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CANVA QUICK TIPS (col-12) ── -->
+    <div class="card col-12">
+      <div class="card-head">
+        <div class="card-num">10</div>
+        <div class="card-title">Canva-Specific Tips</div>
+        <div class="card-rule">Save these as a Brand Kit</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="canva-note">
+          <b>Set up your Brand Kit.</b> In Canva, go to Brand → Brand Kit → add all 12 hex codes above as Brand Colors, then add the 3 fonts. Every new design will auto-suggest them.
+        </div>
+        <div class="canva-note">
+          <b>Save logo as Brand Asset.</b> Upload SVG (light + dark) to Brand → Logos. They'll appear in every design's sidebar for one-click insert.
+        </div>
+        <div class="canva-note">
+          <b>Italic in Canva.</b> For Cormorant italic: select text → pick "Cormorant Garamond" → click the italic <em>I</em> button in the top bar. Don't just type in italics — it won't render correctly.
+        </div>
+        <div class="canva-note">
+          <b>Letter spacing for labels.</b> Plex Mono uppercase labels need <b>letter spacing +180</b> (Canva's slider value). Set this once, save as a Text Style.
+        </div>
+        <div class="canva-note">
+          <b>Templates to build first.</b> Instagram square (1080×1080), Instagram story (1080×1920), Pinterest pin (1000×1500), email header (600×200). All on Parchment <code>#FDFAF6</code> background.
+        </div>
+        <div class="canva-note">
+          <b>Avoid Canva default rounding.</b> When you add a rectangle, manually set corner radius to <b>12</b>. Default 0 (sharp) and 100 (super round) both look off-brand.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sheet-footer">
+    <div class="footer-logo"><span class="r">Ritual</span> Runway</div>
+    <div>Last updated · May 2026</div>
+    <div>Print at 100% · Letter or A4</div>
+  </div>
+
+</div>
+</body>
+</html>
