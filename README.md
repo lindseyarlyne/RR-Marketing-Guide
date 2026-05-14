@@ -1,8 +1,6 @@
-# Ritual Runway Found Hub
+# Ritual Runway Founder Hub
 
 Standing marketing files and reference material for [Ritual Runway](https://github.com/lindseyarlyne/ritual-runway). This repository is intentionally separate from the app codebase.
-
-> **Name note:** If you meant **Fund** Hub (finance positioning), rename the GitHub repository slug to `ritual-runway-fund-hub` and update the title here to match.
 
 ## Automated publishing (recommended)
 
@@ -18,7 +16,7 @@ Every push to `main` updates the live site automatically. You get a `*.vercel.ap
 ## Rename this repository on GitHub
 
 1. On GitHub: **Settings** → **General** → **Repository name**.
-2. Choose a URL-safe name, e.g. `ritual-runway-found-hub` or `ritual-runway-fund-hub`.
+2. Choose a URL-safe name, e.g. `ritual-runway-founder-hub`.
 3. After renaming, update the **Vercel** project’s connected repo if prompted, and refresh any bookmarks or links.
 
 Local remotes after a rename:
