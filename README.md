@@ -32,3 +32,5 @@ Add PDFs, images, HTML, or Markdown here. For a simple browsable site, keep an `
 | File | Description |
 |------|-------------|
 | `canva-cheat-sheet.html` | Brand reference for Canva: palette, typography, components. Open in a browser; path on deploy is `/canva-cheat-sheet.html`. |
+| `ritual-runway-design-system-2.zip` | Archived design system export (HTML docs + `logo-exports/`). Download from the repo or `/ritual-runway-design-system-2.zip` when deployed. |
+| `rr-design-docs/` | Extracted design system: static HTML references and PNG logo exports (served under `/rr-design-docs/…` when deployed). |

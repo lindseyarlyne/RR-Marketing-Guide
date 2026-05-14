@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cursor Prompts — Ritual Runway (Codebase Accurate)</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400&family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #13131A; --card: #1E1E28; --card-hi: #252532; --border: #32323F;
+  --fg: #EEEDF5; --muted: #9A9AAF; --dim: #5A5A72;
+  --primary: #B5AABD; --primary-bg: #2A2635;
+  --green: #7A9B78; --green-bg: #2E3A30;
+  --amber: #C9A87A; --amber-bg: rgba(201,168,122,0.1);
+  --sans: "Jost", sans-serif; --serif: "Cormorant Garamond", serif; --mono: "IBM Plex Mono", monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #0C0C12; font-family: var(--sans); font-weight: 300; color: var(--fg); -webkit-font-smoothing: antialiased; min-height: 100vh; padding: 48px 32px 80px; }
+
+.page-title { font-family: var(--serif); font-style: italic; font-size: 30px; color: var(--fg); margin-bottom: 6px; }
+.page-sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); margin-bottom: 40px; }
+
+.prompt-section { margin-bottom: 44px; }
+.section-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); margin-bottom: 6px; }
+.section-title { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--fg); margin-bottom: 6px; }
+.section-desc { font-size: 13px; color: var(--muted); font-weight: 300; line-height: 1.6; margin-bottom: 16px; }
+
+.file-tag {
+  display: inline-block; font-family: var(--mono); font-size: 9px; letter-spacing: 0.08em;
+  background: var(--card-hi); border: 1px solid var(--border); border-radius: 5px;
+  padding: 2px 8px; color: var(--muted); margin-bottom: 14px;
+}
+
+.prompt-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.prompt-head {
+  padding: 11px 16px; background: var(--card-hi); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.prompt-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+.prompt-head-label { font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.copy-btn {
+  margin-left: auto; background: var(--primary-bg); border: 1px solid var(--border);
+  border-radius: 5px; padding: 4px 12px; cursor: pointer;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--primary); transition: background 0.15s;
+}
+.copy-btn:hover { background: #342f40; }
+.prompt-body {
+  padding: 18px; font-family: var(--mono); font-size: 11.5px; line-height: 1.9;
+  color: #7E7E9A; white-space: pre-wrap; max-height: 680px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.k { color: var(--primary); } /* section heading */
+.g { color: #7A9B78; }        /* file path / added */
+.a { color: var(--amber); }   /* changed / attention */
+.w { color: #C4909A; }        /* removed / warning */
+.d { color: var(--dim); }     /* dim comment */
+
+.divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+</style>
+</head>
+<body>
+
+<div class="page-title">Cursor Prompts — Codebase Accurate</div>
+<div class="page-sub">lindseyarlyne/ritual-runway · TypeScript · Next.js · Tailwind</div>
+
+<!-- ── PROMPT 1: LOGO ── -->
+<div class="prompt-section">
+  <div class="section-label">Prompt 1 of 2</div>
+  <div class="section-title">Logo & Identity — Option A</div>
+  <div class="section-desc">Monogram icon alone in the app header. Full icon + wordmark lockup on landing, auth, and footer. Adds "Sign up free" to the landing nav alongside "LOG IN".</div>
+  <div class="file-tag">app-header.tsx · landing-page.tsx · auth-shell.tsx</div>
+  <div class="prompt-card">
+    <div class="prompt-head">
+      <div class="prompt-dot"></div>
+      <span class="prompt-head-label">Logo changes — 5 locations</span>
+      <button class="copy-btn" onclick="copyPrompt(0)">Copy</button>
+    </div>
+    <div class="prompt-body" id="p0"><span class="k">Option A logo placement — context-sensitive.
+Apply exactly as written. Do not change any layout, routing, or styles outside these areas.</span>
+
+<span class="g">── FILE: components/app-header.tsx ────────────────────────</span>
+
+<span class="a">1. Replace the h1 wordmark with the monogram icon.</span>
+
+FIND:
+  &lt;h1 className="min-w-0 whitespace-nowrap font-serif text-2xl italic text-header-foreground shrink-0"&gt;
+    &lt;span className="text-primary"&gt;Ritual&lt;/span&gt; Runway
+  &lt;/h1&gt;
+
+REPLACE WITH:
+  &lt;button
+    onClick={onExit}
+    aria-label="Ritual Runway home"
+    className="shrink-0 focus:outline-none"
+  &gt;
+    &lt;img
+      src="/icon-dark.png"
+      alt="Ritual Runway"
+      width={32}
+      height={32}
+      className="rounded-[7px] block"
+    /&gt;
+  &lt;/button&gt;
+
+Note: AppHeader does not have an onExit prop in the current signature.
+Add it: interface AppHeaderProps { ..., onExit?: () => void }
+Then wrap the img in the button only if onExit is passed, otherwise render
+the img without a button wrapper.
+
+
+<span class="g">── FILE: components/landing-page.tsx ─────────────────────</span>
+
+<span class="a">2. LandingPageHeader — add icon + wordmark lockup, add Sign up link.</span>
+
+FIND (inside LandingPageHeader):
+  &lt;a href="/" aria-label="Ritual Runway home" className="shrink-0 min-w-0"&gt;
+    &lt;span className="font-serif text-xl italic whitespace-nowrap"&gt;
+      &lt;span className="text-primary"&gt;Ritual&lt;/span&gt;{' '}
+      &lt;span className="text-foreground"&gt;Runway&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/a&gt;
+
+REPLACE WITH:
+  &lt;a href="/" aria-label="Ritual Runway home" className="shrink-0 min-w-0 flex items-center gap-2.5"&gt;
+    &lt;img
+      src="/icon-dark.png"
+      alt=""
+      width={28}
+      height={28}
+      className="rounded-[6px] shrink-0"
+    /&gt;
+    &lt;span className="font-serif text-xl italic whitespace-nowrap"&gt;
+      &lt;span className="text-primary"&gt;Ritual&lt;/span&gt;{' '}
+      &lt;span className="text-foreground"&gt;Runway&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/a&gt;
+
+FIND (inside LandingPageHeader, the right-side nav div):
+  &lt;div className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-2 sm:gap-4"&gt;
+    &lt;Link
+      href="/auth/login"
+      className="inline-flex shrink-0 items-center justify-center rounded-full border border-muted-foreground/40 bg-transparent px-2.5 py-1 font-mono-accent text-[10px] uppercase tracking-widest text-foreground whitespace-nowrap hover:border-primary hover:text-primary sm:px-3 sm:text-xs"
+    &gt;
+      LOG IN
+    &lt;/Link&gt;
+  &lt;/div&gt;
+
+REPLACE WITH:
+  &lt;div className="flex min-w-0 flex-1 flex-wrap items-center justify-end gap-2 sm:gap-3"&gt;
+    &lt;Link
+      href="/auth/login"
+      className="shrink-0 font-mono-accent text-[10px] uppercase tracking-widest text-muted-foreground whitespace-nowrap hover:text-foreground transition-colors"
+    &gt;
+      Log in
+    &lt;/Link&gt;
+    &lt;Link
+      href="/sign-up"
+      className="inline-flex shrink-0 items-center justify-center rounded-full border border-primary/50 bg-transparent px-3 py-1 font-mono-accent text-[10px] uppercase tracking-widest text-primary whitespace-nowrap hover:bg-primary hover:text-primary-foreground transition-colors sm:px-4"
+    &gt;
+      Sign up free
+    &lt;/Link&gt;
+  &lt;/div&gt;
+
+<span class="a">3. Hero section — add monogram icon above the lead paragraph.</span>
+
+FIND (the first element inside the hero &lt;section&gt;):
+  &lt;p
+    className="font-sans text-xl md:text-2xl lg:text-3xl text-foreground/50 leading-relaxed max-w-xl mx-auto"
+    aria-live="polite"
+  &gt;
+
+INSERT BEFORE IT:
+  &lt;img
+    src="/icon-light.png"
+    alt=""
+    aria-hidden="true"
+    width={72}
+    height={72}
+    className="rounded-2xl mx-auto mb-8 opacity-90"
+  /&gt;
+
+<span class="a">4. Footer — add icon + wordmark lockup.</span>
+
+FIND (inside the &lt;footer&gt;):
+  &lt;span className="font-serif italic text-xl"&gt;
+    &lt;span className="text-primary"&gt;Ritual&lt;/span&gt;{' '}
+    &lt;span className="text-header-foreground"&gt;Runway&lt;/span&gt;
+  &lt;/span&gt;
+
+REPLACE WITH:
+  &lt;div className="flex items-center gap-2.5"&gt;
+    &lt;img
+      src="/icon-dark.png"
+      alt=""
+      width={26}
+      height={26}
+      className="rounded-[6px] shrink-0"
+    /&gt;
+    &lt;span className="font-serif italic text-xl"&gt;
+      &lt;span className="text-primary"&gt;Ritual&lt;/span&gt;{' '}
+      &lt;span className="text-header-foreground"&gt;Runway&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+
+
+<span class="g">── FILE: components/auth-shell.tsx ───────────────────────</span>
+
+<span class="a">5. Auth nav — add icon to the brand link.</span>
+
+FIND:
+  &lt;Link href="/" className="font-serif text-lg italic text-foreground shrink-0"&gt;
+    Ritual Runway
+  &lt;/Link&gt;
+
+REPLACE WITH:
+  &lt;Link href="/" className="flex items-center gap-2 shrink-0"&gt;
+    &lt;img
+      src="/icon-dark.png"
+      alt=""
+      width={28}
+      height={28}
+      className="rounded-[6px]"
+    /&gt;
+    &lt;span className="font-serif text-lg italic text-foreground"&gt;
+      &lt;span className="text-primary"&gt;Ritual&lt;/span&gt; Runway
+    &lt;/span&gt;
+  &lt;/Link&gt;</div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── PROMPT 2: ALL REMAINING FIXES ── -->
+<div class="prompt-section">
+  <div class="section-label">Prompt 2 of 2</div>
+  <div class="section-title">Full Audit — All Remaining Fixes</div>
+  <div class="section-desc">Color system, component polish, copy, and landing page. Exact Tailwind class names and file paths from the live codebase.</div>
+  <div class="file-tag">bills-page.tsx · dashboard-page.tsx · ritual-page.tsx · landing-page.tsx · navigation-tabs.tsx</div>
+  <div class="prompt-card">
+    <div class="prompt-head">
+      <div class="prompt-dot"></div>
+      <span class="prompt-head-label">14 fixes — 5 files</span>
+      <button class="copy-btn" onclick="copyPrompt(1)">Copy</button>
+    </div>
+    <div class="prompt-body" id="p1"><span class="k">Full design audit fixes for lindseyarlyne/ritual-runway.
+Apply all changes exactly as written. Do not change logic, routing, or data structures.</span>
+
+<span class="g">── FILE: components/pages/bills-page.tsx ─────────────────</span>
+
+<span class="a">1. paycheckDotMeta() — replace color tokens with muted mauve palette.</span>
+   No green (#positive-muted), no warning-strong. Stay in mauve family.
+
+FIND:
+  function paycheckDotMeta(bill: Pick&lt;Bill, 'paycheck'&gt;): { background: string; title: string } {
+    if (bill.paycheck === 'paycheck1') {
+      return { background: 'var(--positive-muted)', title: 'Assigned to paycheck 1' }
+    }
+    if (bill.paycheck === 'paycheck2') {
+      return { background: 'var(--primary)', title: 'Assigned to paycheck 2' }
+    }
+    if (bill.paycheck === 'either') {
+      return { background: 'var(--accent)', title: 'Either paycheck' }
+    }
+    return { background: 'var(--warning-strong)', title: 'No paycheck assigned' }
+  }
+
+REPLACE WITH:
+  function paycheckDotMeta(bill: Pick&lt;Bill, 'paycheck'&gt;): { background: string; title: string } {
+    if (bill.paycheck === 'paycheck1') {
+      return { background: '#9E8993', title: 'Assigned to Paycheck 1' }   // Ashen Rose
+    }
+    if (bill.paycheck === 'paycheck2') {
+      return { background: '#7F6D76', title: 'Assigned to Paycheck 2' }   // Dusk Mauve
+    }
+    if (bill.paycheck === 'either') {
+      return { background: 'var(--muted-foreground)', title: 'Flexible — either paycheck' }
+    }
+    return { background: 'var(--muted-foreground)', title: 'Not assigned' }
+  }
+
+<span class="a">2. PAYCHECK_OPTIONS — rename "Either paycheck" to "Flexible".</span>
+
+FIND:
+  { value: 'either', label: 'Either paycheck' },
+
+REPLACE WITH:
+  { value: 'either', label: 'Flexible' },
+
+<span class="a">3. Paycheck summary cards — replace static subtitle with utilization bar.</span>
+   Add import at top of file: import { getIncomeThisPayPeriod } from '@/lib/pay-period'
+   Then inside BillsPage, after existing paycheck summary variables, add:
+     const incomePerPaycheck = getIncomeThisPayPeriod(phase.income, data.profile.payFrequency) ?? 0
+
+FIND (first paycheck card):
+  &lt;div className="bg-card rounded-xl border border-border p-4"&gt;
+    &lt;p className="label-small mb-1"&gt;PAYCHECK 1&lt;/p&gt;
+    &lt;p className="font-serif italic text-xl"&gt;{formatCurrency(paycheck1SummaryMonthly)}&lt;/p&gt;
+    &lt;p className="text-xs text-primary mt-1"&gt;Bills assigned to your first paycheck&lt;/p&gt;
+  &lt;/div&gt;
+
+REPLACE WITH:
+  &lt;div className="bg-card rounded-xl border border-border p-4"&gt;
+    &lt;p className="label-small mb-1"&gt;PAYCHECK 1&lt;/p&gt;
+    &lt;p className="font-serif italic text-xl"&gt;{formatCurrency(paycheck1SummaryMonthly)}&lt;/p&gt;
+    {incomePerPaycheck &gt; 0 &amp;&amp; (
+      &lt;&gt;
+        &lt;div className="mt-2.5 mb-1.5 h-[4px] rounded-full bg-border overflow-hidden"&gt;
+          &lt;div
+            className="h-full rounded-full bg-primary transition-[width] duration-500"
+            style={{ width: `${Math.min(100, Math.round((paycheck1SummaryMonthly / incomePerPaycheck) * 100))}%` }}
+          /&gt;
+        &lt;/div&gt;
+        &lt;div className="flex justify-between font-mono-accent text-[9px] text-muted-foreground"&gt;
+          &lt;span&gt;{formatCurrency(paycheck1SummaryMonthly)} in bills&lt;/span&gt;
+          &lt;span&gt;{formatCurrency(Math.max(0, incomePerPaycheck - paycheck1SummaryMonthly))} left&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/&gt;
+    )}
+  &lt;/div&gt;
+
+FIND (second paycheck card):
+  &lt;div className="bg-card rounded-xl border border-border p-4"&gt;
+    &lt;p className="label-small mb-1"&gt;PAYCHECK 2&lt;/p&gt;
+    &lt;p className="font-serif italic text-xl"&gt;{formatCurrency(paycheck2SummaryMonthly)}&lt;/p&gt;
+    &lt;p className="text-xs text-primary mt-1"&gt;Bills assigned to your second paycheck&lt;/p&gt;
+  &lt;/div&gt;
+
+REPLACE WITH:
+  &lt;div className="bg-card rounded-xl border border-border p-4"&gt;
+    &lt;p className="label-small mb-1"&gt;PAYCHECK 2&lt;/p&gt;
+    &lt;p className="font-serif italic text-xl"&gt;{formatCurrency(paycheck2SummaryMonthly)}&lt;/p&gt;
+    {incomePerPaycheck &gt; 0 &amp;&amp; (
+      &lt;&gt;
+        &lt;div className="mt-2.5 mb-1.5 h-[4px] rounded-full bg-border overflow-hidden"&gt;
+          &lt;div
+            className="h-full rounded-full bg-primary transition-[width] duration-500"
+            style={{ width: `${Math.min(100, Math.round((paycheck2SummaryMonthly / incomePerPaycheck) * 100))}%` }}
+          /&gt;
+        &lt;/div&gt;
+        &lt;div className="flex justify-between font-mono-accent text-[9px] text-muted-foreground"&gt;
+          &lt;span&gt;{formatCurrency(paycheck2SummaryMonthly)} in bills&lt;/span&gt;
+          &lt;span&gt;{formatCurrency(Math.max(0, incomePerPaycheck - paycheck2SummaryMonthly))} left&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/&gt;
+    )}
+  &lt;/div&gt;
+
+
+<span class="g">── FILE: components/pages/dashboard-page.tsx ─────────────</span>
+
+<span class="a">4. Summary card icons — remove green and accent, use primary at varying opacity.</span>
+
+FIND:
+  &lt;SummaryCard
+    label="INCOME"
+    value={formatCurrency(monthlyIncome)}
+    icon={&lt;TrendingUp className="w-5 h-5 text-positive-muted" /&gt;}
+  /&gt;
+  &lt;SummaryCard
+    label="BILLS"
+    value={formatCurrency(monthlyBills)}
+    icon={&lt;TrendingDown className="w-5 h-5 text-primary" /&gt;}
+  /&gt;
+  &lt;SummaryCard
+    label="AFTER BILLS"
+    value={formatCurrency(whatsLeft)}
+    icon={&lt;Wallet className="w-5 h-5 text-accent" /&gt;}
+    highlight={whatsLeft &gt; 0}
+  /&gt;
+
+REPLACE WITH:
+  &lt;SummaryCard
+    label="INCOME"
+    value={formatCurrency(monthlyIncome)}
+    icon={&lt;TrendingUp className="w-5 h-5 text-primary" /&gt;}
+  /&gt;
+  &lt;SummaryCard
+    label="BILLS"
+    value={formatCurrency(monthlyBills)}
+    icon={&lt;TrendingDown className="w-5 h-5 text-primary/70" /&gt;}
+  /&gt;
+  &lt;SummaryCard
+    label="AFTER BILLS"
+    value={formatCurrency(whatsLeft)}
+    icon={&lt;Wallet className="w-5 h-5 text-primary/50" /&gt;}
+    highlight={whatsLeft &gt; 0}
+  /&gt;
+
+<span class="a">5. Runway tile — change text-positive to text-primary on the large figure.</span>
+
+FIND:
+  &lt;p className="font-serif text-3xl italic text-positive"&gt;
+    {formatCurrency(perPaycheckLeft)}
+  &lt;/p&gt;
+
+REPLACE WITH:
+  &lt;p className="font-serif text-3xl italic text-primary"&gt;
+    {formatCurrency(perPaycheckLeft)}
+  &lt;/p&gt;
+
+<span class="a">6. "Manage" and "View all" — replace hover:underline text links with ghost buttons.</span>
+
+FIND (Accounts card):
+  className="text-sm text-foreground dark:text-primary shrink-0 hover:underline"
+
+REPLACE WITH:
+  className="shrink-0 rounded-full border border-muted-foreground/30 px-3 py-1 font-mono-accent text-[9px] uppercase tracking-widest text-primary hover:border-primary transition-colors"
+
+Apply the same className replacement to the "View all" button in the Upcoming Bills card.
+
+
+<span class="g">── FILE: components/pages/ritual-page.tsx ────────────────</span>
+
+<span class="a">7. Step number — switch from Jost to Cormorant italic for brand voice.</span>
+
+FIND (inside StepRow, the step number span):
+  &lt;span className="text-base font-light text-foreground/70"&gt;{stepNumber}&lt;/span&gt;
+
+REPLACE WITH:
+  &lt;span className="font-serif italic text-lg text-foreground/70"&gt;{stepNumber}&lt;/span&gt;
+
+<span class="a">8. Daily runway value — replace var(--positive) with var(--primary).</span>
+
+FIND:
+  style={{ color: safePerDay &lt;= 0 ? 'var(--destructive)' : 'var(--positive)' }}
+
+REPLACE WITH:
+  style={{ color: safePerDay &lt;= 0 ? 'var(--destructive)' : 'var(--primary)' }}
+
+
+<span class="g">── FILE: components/landing-page.tsx ─────────────────────</span>
+
+<span class="a">9. System/feature cards — add rounded-xl.</span>
+
+FIND:
+  className="border border-border p-10 bg-header-foreground/[0.06] hover:bg-header-foreground/10 transition-colors"
+
+REPLACE WITH:
+  className="rounded-xl border border-border p-10 bg-header-foreground/[0.06] hover:bg-header-foreground/10 transition-colors"
+
+<span class="a">10. Pricing CTA buttons — shorten copy from "Start your 45-day free trial" to "Start free trial".</span>
+    There are two instances (Annual card and Monthly card). Change both.
+
+FIND (Annual card Link):
+  Start your 45-day free trial
+
+REPLACE WITH:
+  Start free trial
+
+FIND (Monthly card Link):
+  Start your 45-day free trial
+
+REPLACE WITH:
+  Start free trial
+
+
+<span class="g">── FILE: components/navigation-tabs.tsx ──────────────────</span>
+
+<span class="a">11. Bottom nav labels — remove letter-spacing for better mobile legibility.</span>
+    The desktop tab strip keeps its tracking via .label-small — this change
+    is scoped to the mobile bottom nav spans only.
+
+FIND (both bottom-nav button span elements — there are two: one in CORE_TABS.map and one for Settings):
+  className="max-w-full truncate font-mono-accent text-[10px] uppercase leading-tight tracking-[0.18em]"
+
+REPLACE WITH:
+  className="max-w-full truncate font-mono-accent text-[10px] uppercase leading-tight tracking-normal"
+
+Apply to both span instances (inside the CORE_TABS.map and the Settings button).
+
+
+<span class="g">── FILE: components/pages/bills-page.tsx (continued) ─────</span>
+
+<span class="a">12. BillRow metadata — collapse 2 lines into 1 dot-separated line.</span>
+    Remove the standalone "Assigned to [select]" row.
+    Merge the paycheck select into the first metadata line after the due date.
+    Remove "Assigned to" prefix text — context is implied.
+    Color the paycheck value to match the dot (Ashen Rose / Dusk Mauve / muted).
+
+FIND (the two metadata divs inside BillRow's flex-1 div, after EditableText):
+  &lt;div className="flex items-center gap-2 flex-wrap text-xs text-muted-foreground"&gt;
+    &lt;select
+      value={bill.frequency}
+      onChange={(e) =&gt; onUpdate({ frequency: e.target.value as BillFrequency })}
+      className="text-xs text-muted-foreground appearance-none bg-transparent border-none p-0 cursor-pointer"
+    &gt;
+      {BILL_FREQUENCIES.map(f =&gt; (
+        &lt;option key={f.value} value={f.value}&gt;{f.label}&lt;/option&gt;
+      ))}
+    &lt;/select&gt;
+    &lt;span&gt;•&lt;/span&gt;
+    &lt;span className="whitespace-nowrap text-primary"&gt;
+      Due on the{' '}
+      &lt;EditableNumber
+        value={bill.dueDay}
+        onSave={(d) =&gt; onUpdate({ dueDay: d ?? bill.dueDay })}
+        min={1}
+        max={31}
+        decimalPlaces={0}
+        placeholder="e.g. 1st"
+        suffix={`${getOrdinalSuffix(bill.dueDay)}`}
+        suffixDisplayOnlyWhenClosed
+        activateOnFocus
+        className="text-xs"
+      /&gt;
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div className="flex flex-row flex-nowrap items-center gap-x-2 text-xs text-primary font-mono-accent"&gt;
+    &lt;span className="text-xs shrink-0 whitespace-nowrap"&gt;Assigned to&lt;/span&gt;
+    &lt;select
+      value={bill.paycheck || 'either'}
+      onChange={(e) =&gt; onUpdate({ paycheck: e.target.value as PaycheckAssignment })}
+      className="min-w-0 flex-1 text-xs text-primary appearance-none bg-transparent border-none p-0 cursor-pointer font-mono-accent whitespace-nowrap"
+    &gt;
+      {PAYCHECK_OPTIONS.map(p =&gt; (
+        &lt;option key={p.value} value={p.value}&gt;{p.label}&lt;/option&gt;
+      ))}
+    &lt;/select&gt;
+  &lt;/div&gt;
+
+REPLACE WITH (single consolidated line):
+  &lt;div className="flex items-center gap-1.5 flex-wrap text-xs text-muted-foreground mt-1"&gt;
+    &lt;select
+      value={bill.frequency}
+      onChange={(e) =&gt; onUpdate({ frequency: e.target.value as BillFrequency })}
+      className="text-xs text-muted-foreground appearance-none bg-transparent border-none p-0 cursor-pointer"
+    &gt;
+      {BILL_FREQUENCIES.map(f =&gt; (
+        &lt;option key={f.value} value={f.value}&gt;{f.label}&lt;/option&gt;
+      ))}
+    &lt;/select&gt;
+    &lt;span className="opacity-40"&gt;·&lt;/span&gt;
+    &lt;span className="whitespace-nowrap"&gt;
+      Due &lt;EditableNumber
+        value={bill.dueDay}
+        onSave={(d) =&gt; onUpdate({ dueDay: d ?? bill.dueDay })}
+        min={1}
+        max={31}
+        decimalPlaces={0}
+        placeholder="1st"
+        suffix={`${getOrdinalSuffix(bill.dueDay)}`}
+        suffixDisplayOnlyWhenClosed
+        activateOnFocus
+        className="text-xs"
+      /&gt;
+    &lt;/span&gt;
+    &lt;span className="opacity-40"&gt;·&lt;/span&gt;
+    &lt;select
+      value={bill.paycheck || 'either'}
+      onChange={(e) =&gt; onUpdate({ paycheck: e.target.value as PaycheckAssignment })}
+      className="appearance-none bg-transparent border-none p-0 cursor-pointer font-mono-accent text-[10px] whitespace-nowrap"
+      style={{
+        color: bill.paycheck === 'paycheck1' ? '#9E8993'
+             : bill.paycheck === 'paycheck2' ? '#7F6D76'
+             : 'var(--muted-foreground)'
+      }}
+    &gt;
+      {PAYCHECK_OPTIONS.map(p =&gt; (
+        &lt;option key={p.value} value={p.value}&gt;{p.label}&lt;/option&gt;
+      ))}
+    &lt;/select&gt;
+  &lt;/div&gt;
+
+<span class="a">13. BillRow owner display — replace inline "Shared" select with read-only pill.</span>
+    The select is a mis-placed control inside a list row — ownership is a setting,
+    not a quick-tap action. Show it as a non-interactive pill. Editing ownership
+    should move to a detail/edit sheet (separate task).
+
+FIND (the showOwner conditional inside BillRow):
+  {showOwner &amp;&amp; (
+    &lt;select
+      value={bill.owner || 'shared'}
+      onChange={(e) =&gt; onUpdate({ owner: e.target.value as Bill['owner'] })}
+      className="bg-transparent border-none p-0 cursor-pointer hover:text-foreground w-fit"
+    &gt;
+      &lt;option value="person-a"&gt;{personAName || 'Person A'}&lt;/option&gt;
+      &lt;option value="person-b"&gt;{personBName || 'Person B'}&lt;/option&gt;
+      &lt;option value="shared"&gt;Shared&lt;/option&gt;
+    &lt;/select&gt;
+  )}
+
+REPLACE WITH:
+  {showOwner &amp;&amp; (
+    &lt;span className="inline-flex items-center rounded-[4px] border border-border bg-card/80 px-1.5 py-0.5 font-mono-accent text-[9px] uppercase tracking-[0.06em] text-muted-foreground mt-1 w-fit"&gt;
+      {bill.owner === 'person-a'
+        ? (personAName || 'Mine')
+        : bill.owner === 'person-b'
+          ? (personBName || 'Partner')
+          : 'Shared'}
+    &lt;/span&gt;
+  )}
+
+Note: tapping the row to open an ownership edit sheet is a separate task.
+For now this makes the pill display-only and removes accidental edit risk.</div>
+  </div>
+</div>
+
+<script>
+function copyPrompt(n) {
+  const el = document.getElementById('p' + n);
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const btns = document.querySelectorAll('.copy-btn');
+    btns[n].textContent = 'Copied!';
+    setTimeout(() => btns[n].textContent = 'Copy', 2200);
+  });
+}
+</script>
+</body>
+</html>

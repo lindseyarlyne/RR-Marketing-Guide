@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Full Design Audit — Ritual Runway</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #13131A;
+  --card:     #1E1E28;
+  --card-hi:  #252532;
+  --border:   #32323F;
+  --fg:       #EEEDF5;
+  --muted:    #9A9AAF;
+  --dim:      #5A5A72;
+  --primary:  #B5AABD;
+  --primary-bg:#2A2635;
+  --positive: #7A9B78;
+  --pos-bg:   #2E3A30;
+  --warning:  #C4909A;
+  --warn-bg:  #2E2028;
+  --accent:   #D4B896;
+  --ashen:    #9E8993;
+  --dusk:     #7F6D76;
+  --sans:     "Jost", sans-serif;
+  --serif:    "Cormorant Garamond", Georgia, serif;
+  --mono:     "IBM Plex Mono", monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: #0C0C12;
+  font-family: var(--sans);
+  font-weight: 300;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.page { max-width: 1080px; margin: 0 auto; padding: 48px 32px 80px; }
+
+/* ── HERO ── */
+.audit-hero {
+  margin-bottom: 52px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--border);
+}
+.audit-title {
+  font-family: var(--serif); font-style: italic; font-size: 36px;
+  color: var(--fg); margin-bottom: 8px;
+}
+.audit-sub {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 24px;
+}
+.stat-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 8px; padding: 12px 18px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.stat-num {
+  font-family: var(--mono); font-size: 26px;
+  font-variant-numeric: tabular-nums; color: var(--fg);
+}
+.stat-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--dim);
+}
+.stat.critical .stat-num { color: var(--warning); }
+.stat.warn .stat-num { color: var(--accent); }
+.stat.ok .stat-num { color: var(--positive); }
+
+/* ── SECTION ── */
+.section { margin-bottom: 56px; }
+.section-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.section-icon {
+  width: 30px; height: 30px; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 11px; font-weight: 400;
+  flex-shrink: 0;
+}
+.section-icon.logo  { background: var(--primary-bg); color: var(--primary); }
+.section-icon.color { background: rgba(159,137,147,0.15); color: var(--ashen); }
+.section-icon.comp  { background: rgba(181,170,189,0.1); color: var(--primary); }
+.section-icon.copy  { background: rgba(212,184,150,0.1); color: var(--accent); }
+.section-icon.land  { background: var(--pos-bg); color: var(--positive); }
+.section-title {
+  font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--fg);
+}
+.section-count {
+  margin-left: auto; font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim);
+}
+
+/* ── ISSUE CARD ── */
+.issues { display: flex; flex-direction: column; gap: 14px; }
+.issue {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+}
+.issue-head {
+  padding: 14px 16px;
+  display: flex; align-items: flex-start; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.issue-severity {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.14em;
+  text-transform: uppercase; border-radius: 4px; padding: 3px 8px;
+  flex-shrink: 0; margin-top: 2px;
+}
+.sev-critical { background: var(--warn-bg); color: var(--warning); }
+.sev-medium   { background: rgba(212,184,150,0.1); color: var(--accent); }
+.sev-low      { background: var(--pos-bg); color: var(--positive); }
+.issue-title { font-size: 14px; font-weight: 500; color: var(--fg); margin-bottom: 4px; }
+.issue-file {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em;
+  color: var(--dim);
+}
+.issue-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.issue-desc { font-size: 12px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+/* before/after */
+.ba-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.ba-label {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.16em;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.ba-label.before { color: var(--warning); }
+.ba-label.after  { color: var(--positive); }
+.ba-block {
+  background: var(--card-hi); border-radius: 6px; padding: 10px 12px;
+}
+.code-snippet {
+  font-family: var(--mono); font-size: 11px; line-height: 1.7;
+  color: var(--muted); white-space: pre; overflow-x: auto;
+}
+.code-snippet .del { color: var(--warning); }
+.code-snippet .add { color: var(--positive); }
+.code-snippet .kw  { color: var(--primary); }
+.code-snippet .dim { color: var(--dim); }
+
+/* visual swatch demo */
+.swatch-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.swatch {
+  width: 28px; height: 28px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.swatch-label { font-family: var(--mono); font-size: 9px; color: var(--dim); letter-spacing: 0.06em; }
+
+/* bill row demo */
+.demo-bill-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: 6px;
+  background: var(--card-hi);
+}
+.demo-check {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--border); flex-shrink: 0;
+}
+.demo-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.demo-name { font-size: 13px; font-weight: 400; color: var(--fg); }
+.demo-meta {
+  font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 2px;
+  display: flex; align-items: center; gap: 5px;
+}
+.demo-meta-dot { width: 2px; height: 2px; border-radius: 50%; background: currentColor; opacity: 0.4; }
+.demo-pill {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muted);
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1px 5px;
+}
+.demo-amount { font-family: var(--mono); font-size: 13px; color: var(--fg); margin-left: auto; font-variant-numeric: tabular-nums; }
+
+/* header demo */
+.demo-header {
+  background: #1E1E28; border-radius: 6px; padding: 10px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.demo-wordmark { font-family: var(--serif); font-style: italic; color: var(--fg); font-size: 14px; line-height: 1.1; }
+.demo-wordmark .r { color: var(--primary); }
+
+/* pricing card demo */
+.demo-pricing {
+  background: var(--card-hi); border-radius: 10px; padding: 14px 16px;
+  border: 1px solid var(--border);
+}
+.demo-price-num { font-family: var(--serif); font-style: italic; font-size: 32px; color: var(--fg); }
+.demo-btn {
+  margin-top: 10px; background: var(--primary); color: #1E1E28;
+  border-radius: 12px; padding: 9px 14px; font-family: var(--mono);
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── CURSOR PROMPT ── */
+.prompt-wrap {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; margin-top: 56px;
+}
+.prompt-head {
+  padding: 12px 18px; background: var(--card-hi);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.prompt-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); }
+.prompt-head-label {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+}
+.copy-btn {
+  margin-left: auto; background: var(--primary-bg);
+  border: 1px solid var(--border); border-radius: 5px;
+  padding: 4px 12px; cursor: pointer;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--primary);
+}
+.copy-btn:hover { background: #342f40; }
+.prompt-body {
+  padding: 18px; font-family: var(--mono); font-size: 11.5px;
+  line-height: 1.85; color: #7E7E9A; white-space: pre-wrap;
+  max-height: 600px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.pk  { color: var(--primary); }
+.pg  { color: var(--positive); }
+.pa  { color: var(--accent); }
+.pw  { color: var(--warning); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <div class="audit-hero">
+    <div class="audit-title">Full Design Audit</div>
+    <div class="audit-sub">Ritual Runway · All files · May 2026</div>
+    <div class="stat-row">
+      <div class="stat critical"><div class="stat-num">5</div><div class="stat-label">Critical</div></div>
+      <div class="stat warn"><div class="stat-num">7</div><div class="stat-label">Medium</div></div>
+      <div class="stat ok"><div class="stat-num">4</div><div class="stat-label">Low / Polish</div></div>
+      <div class="stat"><div class="stat-num">5</div><div class="stat-label">Files reviewed</div></div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 1: LOGO & IDENTITY ── -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-icon logo">01</div>
+      <div class="section-title">Logo & Identity</div>
+      <div class="section-count">3 issues · Option A locked in</div>
+    </div>
+    <div class="issues">
+
+      <!-- 1.1 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-critical">Critical</span>
+          <div>
+            <div class="issue-title">App header uses text wordmark only — monogram unused</div>
+            <div class="issue-file">AppShell.jsx → AppHeader</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The <code>&lt;AppHeader&gt;</code> renders "Ritual Runway" as stacked Cormorant italic text at ~17px. The RR monogram icon — a distinctive, scalable brand mark — is never shown inside the app at all. Per Option A, the app header should display the monogram icon alone at 32px.</div>
+          <div class="ba-row">
+            <div class="ba-block">
+              <div class="ba-label before">Before</div>
+              <div class="demo-header">
+                <div class="demo-wordmark"><span class="r">Ritual</span><br>Runway</div>
+                <div style="display:flex;gap:8px"><div style="width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.12)"></div><div style="width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.12)"></div></div>
+              </div>
+            </div>
+            <div class="ba-block">
+              <div class="ba-label after">After</div>
+              <div class="demo-header">
+                <img src="assets/icon-dark.png" width="32" height="32" style="border-radius:7px">
+                <div style="display:flex;gap:8px"><div style="width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.12)"></div><div style="width:14px;height:14px;border-radius:50%;background:rgba(255,255,255,0.12)"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.2 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-critical">Critical</span>
+          <div>
+            <div class="issue-title">Landing nav & DemoPhone use text wordmark only</div>
+            <div class="issue-file">LandingPage.jsx → nav, DemoPhone, footer</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The landing page nav, the phone mock inside the demo section, and the footer all render the text wordmark without the icon. The landing nav should use the icon + horizontal wordmark lockup. The DemoPhone header should use a small icon. The footer should match the nav lockup.</div>
+          <div class="ba-row">
+            <div class="ba-block">
+              <div class="ba-label before">Before — nav</div>
+              <div class="demo-header" style="background:#2A2A2E">
+                <span style="font-family:var(--serif);font-style:italic;font-size:18px;color:#fff"><span style="color:#B5AABD">Ritual</span> Runway</span>
+                <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:rgba(181,170,189,0.7);border:1px solid rgba(181,170,189,0.3);border-radius:999px;padding:4px 10px">Log in</span>
+              </div>
+            </div>
+            <div class="ba-block">
+              <div class="ba-label after">After — nav</div>
+              <div class="demo-header" style="background:#2A2A2E">
+                <div style="display:flex;align-items:center;gap:9px">
+                  <img src="assets/icon-dark.png" width="26" height="26" style="border-radius:6px">
+                  <span style="font-family:var(--serif);font-style:italic;font-size:18px;color:#fff"><span style="color:#B5AABD">Ritual</span> Runway</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:rgba(255,255,255,0.5)">Log in</span>
+                  <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.14em;color:#B5AABD;border:1px solid rgba(181,170,189,0.4);border-radius:999px;padding:4px 12px">Sign up free</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1.3 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">Landing nav missing "Sign up" CTA — only shows "Log in"</div>
+            <div class="issue-file">LandingPage.jsx → nav</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">New users arrive on the landing page and the only action in the nav is "Log in" — which implies they already have an account. A "Sign up free" ghost button should sit alongside it. The hero CTA ("Start free trial") handles conversion, but the nav needs both states for returning users and new ones.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: COLOR SYSTEM ── -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-icon color">02</div>
+      <div class="section-title">Color System Violations</div>
+      <div class="section-count">4 issues</div>
+    </div>
+    <div class="issues">
+
+      <!-- 2.1 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-critical">Critical</span>
+          <div>
+            <div class="issue-title">Bill dot colors use sage green + brick red — both outside palette</div>
+            <div class="issue-file">AppPages.jsx → BillsPage → dotColor()</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The <code>dotColor()</code> function returns <code>#A8B5A0</code> (sage green) for PC1, <code>#B5A0B2</code> (purple-mauve) for PC2, and <code>#B0606C</code> (brick red) for unassigned. The user confirmed no green, no red/pink. Replace with Ashen Rose / Dusk Mauve family throughout.</div>
+          <div class="ba-row">
+            <div class="ba-block">
+              <div class="ba-label before">Before — dot colors</div>
+              <div class="swatch-row" style="gap:12px;margin-bottom:8px">
+                <div><div class="swatch" style="background:#A8B5A0"></div><div class="swatch-label" style="margin-top:4px">#A8B5A0<br>PC1 sage</div></div>
+                <div><div class="swatch" style="background:#B5A0B2"></div><div class="swatch-label" style="margin-top:4px">#B5A0B2<br>PC2</div></div>
+                <div><div class="swatch" style="background:#B0606C"></div><div class="swatch-label" style="margin-top:4px">#B0606C<br>Unassigned</div></div>
+              </div>
+            </div>
+            <div class="ba-block">
+              <div class="ba-label after">After — muted mauve family</div>
+              <div class="swatch-row" style="gap:12px;margin-bottom:8px">
+                <div><div class="swatch" style="background:#9E8993"></div><div class="swatch-label" style="margin-top:4px">#9E8993<br>Ashen Rose<br>PC1</div></div>
+                <div><div class="swatch" style="background:#7F6D76"></div><div class="swatch-label" style="margin-top:4px">#7F6D76<br>Dusk Mauve<br>PC2</div></div>
+                <div><div class="swatch" style="background:#5A5A72"></div><div class="swatch-label" style="margin-top:4px">#5A5A72<br>Dim<br>Unassigned</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.2 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-critical">Critical</span>
+          <div>
+            <div class="issue-title">Bill metadata uses var(--warning) — pink/rose color, user said no</div>
+            <div class="issue-file">AppPages.jsx → BillsPage → bill row metadata</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The "Due Nth · Paycheck N" metadata line uses <code>color: b.paycheck ? 'var(--warning)' : '#B0606C'</code>. <code>var(--warning)</code> is <code>#C4909A</code> in dark mode — a pink/dusty rose that the user explicitly rejected. The unassigned fallback <code>#B0606C</code> is brick red — also rejected. Replace both with the muted mauve tokens.</div>
+          <div class="ba-row">
+            <div class="ba-block">
+              <div class="ba-label before">Before</div>
+              <div class="demo-bill-row">
+                <div class="demo-check"></div>
+                <div class="demo-dot" style="background:#A8B5A0"></div>
+                <div style="flex:1">
+                  <div class="demo-name">Utilities</div>
+                  <div class="demo-meta" style="color:#C4909A">Due 3rd · Paycheck 1</div>
+                </div>
+                <div class="demo-amount">$130</div>
+              </div>
+            </div>
+            <div class="ba-block">
+              <div class="ba-label after">After</div>
+              <div class="demo-bill-row">
+                <div class="demo-check"></div>
+                <div class="demo-dot" style="background:#9E8993"></div>
+                <div style="flex:1">
+                  <div class="demo-name">Utilities</div>
+                  <div class="demo-meta" style="color:#9E8993">
+                    Monthly
+                    <span class="demo-meta-dot"></span>
+                    Due 3rd
+                    <span class="demo-meta-dot"></span>
+                    <span style="color:#9E8993">Paycheck 1</span>
+                  </div>
+                </div>
+                <div class="demo-amount">$130</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.3 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">Dashboard summary icons use accent gold + sage — inconsistent palette</div>
+            <div class="issue-file">AppPages.jsx → DashboardPage → SummaryCard icons</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The three dashboard summary cards use <code>#A8B5A0</code> (sage) for INCOME, <code>var(--primary)</code> for BILLS, and <code>var(--accent)</code> (warm gold) for AFTER BILLS. This mixes three hue families in one row. Simplify: use primary mauve for all three icons at different opacities, letting the label carry the semantic meaning.</div>
+        </div>
+      </div>
+
+      <!-- 2.4 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">Ritual page "daily runway" value uses var(--positive) sage green</div>
+            <div class="issue-file">AppPages.jsx → RitualPage</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The "Your daily runway" value in the ritual summary card and the runway tile on the dashboard both use <code>var(--positive)</code> — which is sage green <code>#7A9B78</code>. This is a meaningful semantic color (money you have), but it conflicts with the "no green" palette direction. Suggest replacing with <code>var(--primary)</code> mauve for the runway figure, reserving green only if absolutely needed for a "safe" vs. "danger" comparison.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: COMPONENTS ── -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-icon comp">03</div>
+      <div class="section-title">Component Consistency</div>
+      <div class="section-count">5 issues</div>
+    </div>
+    <div class="issues">
+
+      <!-- 3.1 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-critical">Critical</span>
+          <div>
+            <div class="issue-title">Paycheck cards missing utilization bar — "$0" is uninformative</div>
+            <div class="issue-file">AppPages.jsx → BillsPage → paycheck card divs</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The paycheck cards show only a mono label + serif italic amount + Jost sub-text. When no bills are assigned, the card shows "$0" with no context. Adding the utilization bar (already designed — matches the Ritual page progress bar at 4px) transforms the card into an active budget signal. The "Bills assigned to your X paycheck" subtitle should be replaced by the bar + "$X left" meta line.</div>
+        </div>
+      </div>
+
+      <!-- 3.2 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">Pricing cards use border-radius: 4px — sharp, inconsistent</div>
+            <div class="issue-file">landing.css → .pricing-card</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">Every other card in the app uses <code>border-radius: 12px</code> (the <code>--radius</code> token). The pricing cards use 4px — noticeably angular. The "system section" cards have no border-radius at all (sharp rectangle). Both should match the app's 12px token.</div>
+          <div class="ba-row">
+            <div class="ba-block">
+              <div class="ba-label before">Pricing card — before (4px)</div>
+              <div class="demo-pricing" style="border-radius:4px">
+                <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Annual</div>
+                <div class="demo-price-num">$5</div>
+                <div class="demo-btn" style="border-radius:4px">Start free trial</div>
+              </div>
+            </div>
+            <div class="ba-block">
+              <div class="ba-label after">Pricing card — after (12px)</div>
+              <div class="demo-pricing" style="border-radius:12px">
+                <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Annual</div>
+                <div class="demo-price-num">$5</div>
+                <div class="demo-btn" style="border-radius:12px">Start free trial</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.3 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">Ritual step buttons use Jost numerals — should use Cormorant for brand voice</div>
+            <div class="issue-file">AppPages.jsx → RitualPage → step button</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The 40×40px step buttons show the step number in Jost 300 at 15px — generic sans. Switching to Cormorant Garamond italic gives the numbers the brand's editorial character. The Ritual page is emotionally the most important in the app — every detail should feel intentional.</div>
+          <div class="ba-row">
+            <div class="ba-block">
+              <div class="ba-label before">Step number — Jost</div>
+              <div style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(238,237,245,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:300;font-size:15px;color:rgba(238,237,245,0.7)">3</div>
+            </div>
+            <div class="ba-block">
+              <div class="ba-label after">Step number — Cormorant italic</div>
+              <div style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(238,237,245,0.3);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-style:italic;font-size:22px;color:rgba(238,237,245,0.7)">3</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3.4 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">"Manage" and "View all" buttons don't follow button system</div>
+            <div class="issue-file">AppPages.jsx → DashboardPage → card header buttons</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The secondary action buttons in card headers ("Manage", "View all") use <code>fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: 14</code> — plain text with primary color. The design system has a <code>.btn-ghost</code> class (mono, letter-spaced, uppercase, pill border) that should be used here for consistency. These should feel like controls, not links.</div>
+        </div>
+      </div>
+
+      <!-- 3.5 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-low">Low</span>
+          <div>
+            <div class="issue-title">Pricing CTA copy is too long — "START YOUR 45-DAY FREE TRIAL"</div>
+            <div class="issue-file">LandingPage.jsx → pricing section</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The button text "START YOUR 45-DAY FREE TRIAL" is 30 characters in all-caps mono with letter spacing — it wraps on small screens and visually overwhelms the card. The "45 days free" is already in the footer note directly below. Shorten to "START FREE TRIAL" — cleaner, still accurate.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: COPY & UX ── -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-icon copy">04</div>
+      <div class="section-title">Copy & UX Language</div>
+      <div class="section-count">4 issues</div>
+    </div>
+    <div class="issues">
+
+      <!-- 4.1 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-critical">Critical</span>
+          <div>
+            <div class="issue-title">"Either" paycheck assignment label is ambiguous</div>
+            <div class="issue-file">AppPages.jsx → BillsPage (+ bill-redesign-rr.html already updated)</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The paycheck assignment "Either" doesn't tell users whether it means "assigned to both," "will be split," or "not yet decided." Replace with <strong>"Flexible"</strong> — intentional, reads as a deliberate choice rather than an error state. Already applied in the bill redesign mockup; needs to flow into the actual app code.</div>
+        </div>
+      </div>
+
+      <!-- 4.2 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">"No paycheck assigned yet" is passive — should be actionable</div>
+            <div class="issue-file">AppPages.jsx → BillsPage → unassigned bill metadata</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">Bills with <code>paycheck: null</code> show "No paycheck assigned yet" in brick red — passive copy in an alarming color. Replace with: text "Not assigned" in muted-fg, no color alarm. If the user needs to act, a subtle nudge like a small indicator is better than red text on every unassigned row.</div>
+        </div>
+      </div>
+
+      <!-- 4.3 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-medium">Medium</span>
+          <div>
+            <div class="issue-title">Sample data has duplicate phone bills — confusing onboarding</div>
+            <div class="issue-file">App.jsx → SAMPLE_DATA → bills array</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The sample data contains both <code>{ name: 'Cell phone', amount: 70, paycheck: 2 }</code> and <code>{ name: 'Phone bill', amount: 45, paycheck: null }</code>. Two phone-related bills with different amounts is confusing for new users exploring the app. Remove one — keep "Cell phone" with an amount and keep the null-paycheck example as a different bill category (e.g., "Subscriptions").</div>
+        </div>
+      </div>
+
+      <!-- 4.4 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-low">Low</span>
+          <div>
+            <div class="issue-title">Bottom nav uses mono + letter-spacing at 10px — legibility issue on mobile</div>
+            <div class="issue-file">style.css → .bottom-nav button span</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">Mobile bottom nav labels use <code>font-family: IBM Plex Mono, letter-spacing: 0.18em, font-size: 10px</code>. At this size, the letter-spacing stretches "Settings" and "Ritual" uncomfortably. Remove the letter-spacing on the bottom nav specifically (keep it on the desktop tab strip where there's more space). The mono font alone at 10px is sufficient brand signal.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: LANDING PAGE ── -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-icon land">05</div>
+      <div class="section-title">Landing Page Structure</div>
+      <div class="section-count">2 issues</div>
+    </div>
+    <div class="issues">
+
+      <!-- 5.1 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-low">Low</span>
+          <div>
+            <div class="issue-title">Hero section has no visual brand anchor</div>
+            <div class="issue-file">LandingPage.jsx → hero section</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The hero section opens with a text lead paragraph and then the large serif display line — no mark, no icon, nothing visual before the copy. Adding the RR monogram above the hero text (centered, 64px, with a subtle fade-in) gives new users a visual identity hook before they read a word. This is the most important first impression in the product.</div>
+        </div>
+      </div>
+
+      <!-- 5.2 -->
+      <div class="issue">
+        <div class="issue-head">
+          <span class="issue-severity sev-low">Low</span>
+          <div>
+            <div class="issue-title">System section cards have no border-radius — sharp corners throughout</div>
+            <div class="issue-file">landing.css → .system-card</div>
+          </div>
+        </div>
+        <div class="issue-body">
+          <div class="issue-desc">The three "system" feature cards have no <code>border-radius</code> — hard right-angle corners in a UI that uses 12px radius everywhere else. Add <code>border-radius: 12px</code> to <code>.system-card</code>.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CURSOR PROMPT 1: OPTION A LOGO ── -->
+  <div style="margin-bottom:12px">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px">Cursor Prompt 1 of 2</div>
+    <div style="font-family:var(--serif);font-style:italic;font-size:20px;color:var(--fg)">Logo & Identity — Option A</div>
+  </div>
+  <div class="prompt-wrap" style="margin-bottom:32px">
+    <div class="prompt-head">
+      <div class="prompt-dot"></div>
+      <span class="prompt-head-label">Logo changes — AppShell.jsx · LandingPage.jsx</span>
+      <button class="copy-btn" onclick="copyPrompt(0)">Copy</button>
+    </div>
+    <div class="prompt-body" id="p0"><span class="pk">OPTION A — Context-sensitive logo placement.
+Do not change any layout, spacing, or logic outside these specific areas.</span>
+
+<span class="pg">1. AppShell.jsx → AppHeader component</span>
+Replace the text wordmark with the monogram icon only:
+
+  BEFORE:
+    &lt;span className="wordmark" onClick={onExit} style={{ cursor: 'pointer' }}&gt;
+      &lt;span className="ritual"&gt;Ritual&lt;/span&gt; Runway
+    &lt;/span&gt;
+
+  AFTER:
+    &lt;img
+      src="/assets/icon-dark.png"
+      alt="Ritual Runway"
+      onClick={onExit}
+      style={{ width: 32, height: 32, borderRadius: 7, cursor: 'pointer', display: 'block' }}
+    /&gt;
+
+<span class="pg">2. LandingPage.jsx → nav element</span>
+Replace text wordmark with inline icon + wordmark lockup.
+Also add a "Sign up free" secondary button next to "Log in":
+
+  BEFORE:
+    &lt;span className="wordmark" style={{ fontSize: 22 }}&gt;
+      &lt;span className="ritual"&gt;Ritual&lt;/span&gt; &lt;span ...&gt;Runway&lt;/span&gt;
+    &lt;/span&gt;
+    &lt;button className="btn-ghost" onClick={onEnterApp}&gt;Log in&lt;/button&gt;
+
+  AFTER:
+    &lt;div style={{ display: 'flex', alignItems: 'center', gap: 10 }}&gt;
+      &lt;img src="/assets/icon-dark.png" alt="RR" style={{ width: 28, height: 28, borderRadius: 6 }} /&gt;
+      &lt;span className="wordmark" style={{ fontSize: 20 }}&gt;
+        &lt;span className="ritual"&gt;Ritual&lt;/span&gt; Runway
+      &lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div style={{ display: 'flex', gap: 10, alignItems: 'center' }}&gt;
+      &lt;button className="btn-ghost" onClick={onEnterApp}
+        style={{ background: 'transparent', border: 'none', color: 'var(--muted-foreground)',
+                 fontFamily: 'var(--font-mono-accent)', fontSize: 10, letterSpacing: '0.18em',
+                 textTransform: 'uppercase', cursor: 'pointer' }}&gt;
+        Log in
+      &lt;/button&gt;
+      &lt;button className="btn-ghost" onClick={onEnterApp}&gt;Sign up free&lt;/button&gt;
+    &lt;/div&gt;
+
+<span class="pg">3. LandingPage.jsx → DemoPhone → phone-header div</span>
+Replace text wordmark with small icon:
+
+  BEFORE:
+    &lt;span className="wordmark" style={{ fontSize: 18 }}&gt;
+      &lt;span className="ritual"&gt;Ritual&lt;/span&gt; Runway
+    &lt;/span&gt;
+
+  AFTER:
+    &lt;img src="/assets/icon-dark.png" alt="RR"
+      style={{ width: 22, height: 22, borderRadius: 5, display: 'block' }} /&gt;
+
+<span class="pg">4. LandingPage.jsx → hero section</span>
+Add monogram above the hero display text:
+
+  Before the &lt;p className="hero-lead"&gt; element, insert:
+    &lt;img src="/assets/icon-light.png" alt="Ritual Runway"
+      style={{ width: 72, height: 72, borderRadius: 16, margin: '0 auto 28px',
+               display: 'block', opacity: 0.9 }} /&gt;
+
+  Note: use icon-light.png (mauve on parchment) on the dark landing background
+  for visual contrast — the light version reads better at large size on dark.
+
+<span class="pg">5. LandingPage.jsx → footer</span>
+Replace text wordmark with inline lockup:
+
+  BEFORE:
+    &lt;span className="wordmark" style={{ fontSize: 22, color: 'var(--header-foreground)' }}&gt;
+      &lt;span className="ritual"&gt;Ritual&lt;/span&gt; Runway
+    &lt;/span&gt;
+
+  AFTER:
+    &lt;div style={{ display: 'flex', alignItems: 'center', gap: 10 }}&gt;
+      &lt;img src="/assets/icon-dark.png" alt="RR"
+        style={{ width: 28, height: 28, borderRadius: 6 }} /&gt;
+      &lt;span className="wordmark" style={{ fontSize: 20, color: 'var(--header-foreground)' }}&gt;
+        &lt;span className="ritual"&gt;Ritual&lt;/span&gt; Runway
+      &lt;/span&gt;
+    &lt;/div&gt;</div>
+  </div>
+
+  <!-- ── CURSOR PROMPT 2: FULL AUDIT FIXES ── -->
+  <div style="margin-bottom:12px">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px">Cursor Prompt 2 of 2</div>
+    <div style="font-family:var(--serif);font-style:italic;font-size:20px;color:var(--fg)">Full Audit — All Remaining Fixes</div>
+  </div>
+  <div class="prompt-wrap">
+    <div class="prompt-head">
+      <div class="prompt-dot"></div>
+      <span class="prompt-head-label">16 fixes — AppPages.jsx · App.jsx · landing.css · style.css</span>
+      <button class="copy-btn" onclick="copyPrompt(1)">Copy</button>
+    </div>
+    <div class="prompt-body" id="p1"><span class="pk">Full design audit fixes — apply all of the following.
+Do not touch any other logic, routing, or data structures.</span>
+
+<span class="pg">── COLOR FIXES ──────────────────────────────────────────</span>
+
+<span class="pg">1. AppPages.jsx → dotColor() function</span>
+Replace the three color values:
+  #A8B5A0  →  #9E8993   (Ashen Rose — Paycheck 1)
+  #B5A0B2  →  #7F6D76   (Dusk Mauve — Paycheck 2)
+  #B0606C  →  #5A5A72   (Dim neutral — Unassigned)
+
+<span class="pg">2. AppPages.jsx → BillsPage → bill row metadata color</span>
+Change:
+  color: b.paycheck ? 'var(--warning)' : '#B0606C'
+To:
+  color: b.paycheck === 1 ? '#9E8993'
+       : b.paycheck === 2 ? '#7F6D76'
+       : 'var(--muted-foreground)'
+
+<span class="pg">3. AppPages.jsx → DashboardPage → SummaryCard icon colors</span>
+Change the three icon colors to use primary at varying opacity:
+  INCOME:     color="var(--primary)"  (full opacity)
+  BILLS:      color="color-mix(in srgb, var(--primary) 70%, transparent)"
+  AFTER BILLS:color="color-mix(in srgb, var(--primary) 50%, transparent)"
+
+<span class="pg">4. AppPages.jsx → RitualPage → "Your daily runway" value</span>
+Change:
+  color: 'var(--positive)'
+To:
+  color: 'var(--primary)'
+Also update the runway tile in DashboardPage — same change.
+
+<span class="pg">── COMPONENT FIXES ──────────────────────────────────────</span>
+
+<span class="pg">5. AppPages.jsx → BillsPage → paycheck cards</span>
+In both paycheck card divs, replace the subtitle text with a utilization bar:
+
+  REMOVE:
+    &lt;p style={{ ...fontSize: 12, color: 'var(--muted-foreground)'... }}&gt;
+      Bills assigned to your X paycheck
+    &lt;/p&gt;
+
+  ADD (after the serif italic amount div):
+    &lt;div style={{ height: 4, background: 'var(--border)', borderRadius: 9999,
+                  overflow: 'hidden', margin: '10px 0 6px' }}&gt;
+      &lt;div style={{ height: '100%', borderRadius: 9999,
+                    background: 'var(--primary)',
+                    width: `${Math.min(100, Math.round((pcNTotal / income[0].amount) * 100))}%`,
+                    transition: 'width 400ms ease' }} /&gt;
+    &lt;/div&gt;
+    &lt;div style={{ display: 'flex', justifyContent: 'space-between',
+                  fontFamily: 'var(--font-mono-accent)', fontSize: 9.5,
+                  letterSpacing: '0.06em', color: 'var(--muted-foreground)' }}&gt;
+      &lt;span&gt;{fmt(pcNTotal)} in bills&lt;/span&gt;
+      &lt;span&gt;{fmt(income[0].amount - pcNTotal)} left&lt;/span&gt;
+    &lt;/div&gt;
+
+  Note: pcNTotal = pc1Total for card 1, pc2Total for card 2.
+  income[0].amount is the primary paycheck amount.
+
+<span class="pg">6. landing.css → .pricing-card</span>
+Change:  border-radius: 4px
+To:      border-radius: 12px
+
+<span class="pg">7. landing.css → .system-card</span>
+Add:     border-radius: 12px
+
+<span class="pg">8. AppPages.jsx → RitualPage → step button numerals</span>
+Change the number display inside the ritual step button from Jost to Cormorant:
+  fontFamily: 'var(--font-sans)', fontWeight: 300, fontSize: 15
+→ fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400, fontSize: 20
+
+<span class="pg">9. AppPages.jsx → DashboardPage → "Manage" and "View all" buttons</span>
+Replace the inline style objects on these buttons with the .btn-ghost class:
+  &lt;button className="btn-ghost" onClick={...}&gt;Manage&lt;/button&gt;
+  &lt;button className="btn-ghost" onClick={...}&gt;View all&lt;/button&gt;
+Remove the conflicting inline styles (background, border, color, fontFamily, etc.)
+
+<span class="pa">── COPY FIXES ────────────────────────────────────────────</span>
+
+<span class="pa">10. AppPages.jsx → BillsPage → "Either" → "Flexible"</span>
+In the bill row metadata, any instance of paycheckLabel "Either" should
+output "Flexible" instead. Update the ordinal/label logic accordingly.
+The paycheck assignment options are: "Paycheck 1", "Paycheck 2", "Flexible".
+
+<span class="pa">11. AppPages.jsx → BillsPage → unassigned bill copy</span>
+Change:
+  &lt;&gt;No paycheck assigned yet&lt;/&gt;
+To:
+  &lt;&gt;Not assigned&lt;/&gt;
+And change its color to 'var(--muted-foreground)' (remove the brick red #B0606C).
+
+<span class="pa">12. App.jsx → SAMPLE_DATA → bills array</span>
+Remove the duplicate phone bill. Keep:
+  { name: 'Cell phone', amount: 70, paid: false, paycheck: 2, dueDay: 20 }
+Replace:
+  { name: 'Phone bill', amount: 45, paid: false, paycheck: null, dueDay: 25 }
+With a clearly different category, e.g.:
+  { name: 'Subscriptions', amount: 45, paid: false, paycheck: null, dueDay: 25 }
+
+<span class="pa">13. LandingPage.jsx → pricing section → CTA button copy</span>
+Change both instances of:
+  "START YOUR 45-DAY FREE TRIAL"
+To:
+  "START FREE TRIAL"
+
+<span class="pg">── POLISH ────────────────────────────────────────────────</span>
+
+<span class="pg">14. style.css → .bottom-nav button span</span>
+Remove the letter-spacing from bottom nav labels only:
+  Add to .bottom-nav button span:  letter-spacing: 0;
+  (Desktop .tab-strip keeps its letter-spacing: 0.18em — don't change that.)
+
+<span class="pg">15. LandingPage.jsx → hero section</span>
+Add monogram icon above the hero lead paragraph (see Prompt 1, item 4).
+
+<span class="pg">16. LandingPage.jsx → pricing footer note</span>
+The footer note "Free 45-day trial · No bank connection · No data selling"
+already says 45-day trial. After shortening the button to "START FREE TRIAL",
+update this note to:
+  "45-day free trial · No bank connection · No data selling"
+(add "free" so it reads naturally without the button context)</div>
+  </div>
+
+</div>
+
+<script>
+function copyPrompt(n) {
+  const el = document.getElementById('p' + n);
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const btns = document.querySelectorAll('.copy-btn');
+    btns[n].textContent = 'Copied!';
+    setTimeout(() => btns[n].textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>

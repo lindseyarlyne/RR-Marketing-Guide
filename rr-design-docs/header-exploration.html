@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Header & Logo — Ritual Runway</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #13131A;
+  --card:     #1E1E28;
+  --card-hi:  #252532;
+  --border:   #32323F;
+  --fg:       #EEEDF5;
+  --muted:    #9A9AAF;
+  --dim:      #5A5A72;
+  --primary:  #B5AABD;
+  --primary-bg: #2A2635;
+  --sans:     "Jost", sans-serif;
+  --serif:    "Cormorant Garamond", Georgia, serif;
+  --mono:     "IBM Plex Mono", monospace;
+  /* light mode for landing */
+  --l-bg:     #F2F0F5;
+  --l-card:   #FDFAF6;
+  --l-border: #D8D3C9;
+  --l-fg:     #26262B;
+  --l-muted:  #6B6175;
+  --l-header: #2A2A2E;
+  --l-primary:#9B8EA0;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: #0C0C12;
+  font-family: var(--sans);
+  font-weight: 300;
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  padding: 48px 32px 80px;
+}
+
+/* ── PAGE HEADER ── */
+.page-title {
+  font-family: var(--serif); font-style: italic; font-size: 26px;
+  color: var(--fg); margin-bottom: 6px;
+}
+.page-sub {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--dim); margin-bottom: 48px;
+}
+
+/* ── GRID ── */
+.grid {
+  display: grid;
+  grid-template-columns: 140px 1fr 1fr 1fr;
+  gap: 0;
+  max-width: 1100px;
+}
+
+/* column headers */
+.col-head {
+  padding: 0 0 16px 0;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--dim);
+  display: flex; flex-direction: column; gap: 4px;
+}
+.col-head .opt-label {
+  font-family: var(--serif); font-style: italic; font-size: 17px;
+  color: var(--fg); letter-spacing: 0;
+}
+.col-head.recommended .opt-label { color: var(--primary); }
+.col-head .opt-badge {
+  display: inline-block; font-family: var(--mono); font-size: 8px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: var(--primary-bg); color: var(--primary);
+  border-radius: 4px; padding: 2px 7px; margin-top: 2px; width: fit-content;
+}
+.col-head .current-badge {
+  display: inline-block; font-family: var(--mono); font-size: 8px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  background: rgba(90,90,114,0.2); color: var(--dim);
+  border-radius: 4px; padding: 2px 7px; margin-top: 2px; width: fit-content;
+}
+
+/* row labels */
+.row-label {
+  padding: 20px 20px 20px 0;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--dim);
+  display: flex; align-items: flex-start; padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+/* cells */
+.cell {
+  border-top: 1px solid var(--border);
+  padding: 20px 12px;
+}
+.cell:not(:last-child) { border-right: 1px solid var(--border); }
+
+/* ── COMPONENT FRAMES ── */
+
+/* APP HEADER */
+.app-header-frame {
+  background: #1E1E28;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.app-header-icons {
+  display: flex; gap: 12px; align-items: center;
+}
+.header-icon-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+}
+.wordmark-text {
+  font-family: var(--serif); font-style: italic;
+  line-height: 1.1;
+}
+.wordmark-text .ritual { color: var(--primary); }
+.wordmark-text .runway { color: var(--fg); }
+
+.monogram-img {
+  border-radius: 7px;
+  display: block;
+  object-fit: cover;
+}
+
+/* SIGN IN FRAME */
+.auth-frame {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.auth-brand {
+  padding: 24px 20px 20px;
+  display: flex; flex-direction: column; align-items: center;
+  border-bottom: 1px solid var(--border);
+}
+.auth-form {
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.auth-input {
+  height: 36px; border-radius: 8px;
+  background: var(--card-hi); border: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 12px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--dim);
+}
+.auth-btn {
+  height: 36px; border-radius: 999px;
+  background: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #1E1E28;
+}
+.auth-link {
+  text-align: center; font-size: 11px; color: var(--muted);
+}
+
+/* LANDING FRAME */
+.landing-frame {
+  background: #F2F0F5;
+  border: 1px solid #D8D3C9;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.landing-nav {
+  background: #2A2A2E;
+  padding: 12px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.landing-nav-links {
+  display: flex; gap: 16px;
+}
+.landing-nav-link {
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: rgba(255,255,255,0.45);
+}
+.landing-hero {
+  padding: 28px 20px 24px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; gap: 10px;
+}
+.landing-tagline {
+  font-family: var(--serif); font-style: italic;
+  font-size: 20px; color: #26262B; line-height: 1.2;
+}
+.landing-sub {
+  font-family: var(--sans); font-weight: 300;
+  font-size: 11px; color: #6B6175; line-height: 1.5; max-width: 200px;
+}
+.landing-cta {
+  background: #9B8EA0; color: #FFF;
+  border-radius: 999px; padding: 8px 20px;
+  font-family: var(--mono); font-size: 8.5px; letter-spacing: 0.2em;
+  text-transform: uppercase; margin-top: 4px;
+}
+
+/* Wordmark-only (current) text treatment */
+.wordmark-stacked {
+  font-family: var(--serif); font-style: italic;
+  line-height: 1.05;
+}
+.wordmark-stacked .ritual { color: var(--primary); display: block; }
+.wordmark-stacked .runway { color: var(--fg); display: block; }
+
+.wordmark-inline {
+  font-family: var(--serif); font-style: italic; font-size: 20px;
+  line-height: 1;
+}
+.wordmark-inline .ritual { color: var(--primary); }
+.wordmark-inline .runway { color: var(--fg); }
+
+/* landing light wordmark */
+.wordmark-light {
+  font-family: var(--serif); font-style: italic;
+}
+.wordmark-light .ritual { color: #9B8EA0; }
+.wordmark-light .runway { color: #26262B; }
+
+/* annotation below cells */
+.cell-note {
+  margin-top: 10px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.05em;
+  color: var(--dim); line-height: 1.55;
+}
+.cell-note strong { color: var(--muted); font-weight: 400; }
+</style>
+</head>
+<body>
+
+<div class="page-title">Header & Logo — Placement Exploration</div>
+<div class="page-sub">3 options · App header · Sign in/up · Landing page</div>
+
+<div class="grid">
+
+  <!-- Column headers -->
+  <div class="col-head" style="border:none"></div>
+
+  <div class="col-head recommended" style="padding-left:12px">
+    <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim)">Option A</span>
+    <span class="opt-label">Monogram<br>+ Lockup</span>
+    <span class="opt-badge">Recommended</span>
+    <div style="margin-top:6px;font-size:11px;color:var(--muted);font-weight:300;line-height:1.55">Icon alone in-app. Full lockup on landing & auth.</div>
+  </div>
+
+  <div class="col-head" style="padding-left:12px;border-left:1px solid var(--border)">
+    <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim)">Option B</span>
+    <span class="opt-label">Inline<br>Lockup</span>
+    <div style="margin-top:6px;font-size:11px;color:var(--muted);font-weight:300;line-height:1.55">Icon + wordmark together everywhere.</div>
+  </div>
+
+  <div class="col-head" style="padding-left:12px;border-left:1px solid var(--border)">
+    <span style="font-family:var(--mono);font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--dim)">Option C</span>
+    <span class="opt-label">Text<br>Wordmark</span>
+    <span class="current-badge">Current</span>
+    <div style="margin-top:6px;font-size:11px;color:var(--muted);font-weight:300;line-height:1.55">Stacked text only. No icon used.</div>
+  </div>
+
+  <!-- ── ROW 1: APP HEADER ── -->
+  <div class="row-label">App<br>Header</div>
+
+  <!-- A: monogram only -->
+  <div class="cell">
+    <div class="app-header-frame">
+      <img src="assets/icon-dark.png" class="monogram-img" width="32" height="32" alt="RR">
+      <div class="app-header-icons">
+        <div class="header-icon-dot"></div>
+        <div class="header-icon-dot"></div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>32px monogram only.</strong> Clean, premium — mark speaks for itself once user knows the app.</div>
+  </div>
+
+  <!-- B: icon + inline wordmark -->
+  <div class="cell" style="border-left:1px solid var(--border)">
+    <div class="app-header-frame">
+      <div style="display:flex;align-items:center;gap:10px">
+        <img src="assets/icon-dark.png" class="monogram-img" width="28" height="28" alt="RR">
+        <span class="wordmark-inline" style="font-size:17px"><span class="ritual">Ritual</span> <span class="runway">Runway</span></span>
+      </div>
+      <div class="app-header-icons">
+        <div class="header-icon-dot"></div>
+        <div class="header-icon-dot"></div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Icon + wordmark inline.</strong> More brand presence, takes slightly more horizontal space.</div>
+  </div>
+
+  <!-- C: stacked text only -->
+  <div class="cell" style="border-left:1px solid var(--border)">
+    <div class="app-header-frame">
+      <span class="wordmark-stacked" style="font-size:15px">
+        <span class="ritual">Ritual</span>
+        <span class="runway">Runway</span>
+      </span>
+      <div class="app-header-icons">
+        <div class="header-icon-dot"></div>
+        <div class="header-icon-dot"></div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Text only — current state.</strong> No icon. At 15px the two-color serif barely reads, and the monogram asset is completely unused.</div>
+  </div>
+
+  <!-- ── ROW 2: SIGN IN ── -->
+  <div class="row-label">Sign In<br>/ Sign Up</div>
+
+  <!-- A -->
+  <div class="cell">
+    <div class="auth-frame">
+      <div class="auth-brand" style="gap:12px">
+        <img src="assets/icon-dark.png" class="monogram-img" width="52" height="52" alt="RR" style="border-radius:12px">
+        <div style="font-family:var(--serif);font-style:italic;font-size:22px;color:var(--fg);line-height:1">
+          <span style="color:var(--primary)">Ritual</span> Runway
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim)">Sign in to continue</div>
+      </div>
+      <div class="auth-form">
+        <div class="auth-input">Email address</div>
+        <div class="auth-input">Password</div>
+        <div class="auth-btn">Sign In</div>
+        <div class="auth-link">Don't have an account? <span style="color:var(--primary)">Sign up</span></div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Icon (52px) + wordmark stacked.</strong> The mark is the welcome moment — legible, brand-forward.</div>
+  </div>
+
+  <!-- B -->
+  <div class="cell" style="border-left:1px solid var(--border)">
+    <div class="auth-frame">
+      <div class="auth-brand" style="flex-direction:row;justify-content:center;gap:10px;padding:18px 20px 16px">
+        <img src="assets/icon-dark.png" class="monogram-img" width="36" height="36" alt="RR" style="border-radius:8px">
+        <div style="font-family:var(--serif);font-style:italic;font-size:22px;color:var(--fg);line-height:1.1">
+          <span style="color:var(--primary)">Ritual</span><br>Runway
+        </div>
+      </div>
+      <div class="auth-form" style="padding-top:6px">
+        <div class="auth-input">Email address</div>
+        <div class="auth-input">Password</div>
+        <div class="auth-btn">Sign In</div>
+        <div class="auth-link">Don't have an account? <span style="color:var(--primary)">Sign up</span></div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Icon + stacked wordmark side-by-side.</strong> Compact but the 36px icon competes with the type size.</div>
+  </div>
+
+  <!-- C -->
+  <div class="cell" style="border-left:1px solid var(--border)">
+    <div class="auth-frame">
+      <div class="auth-brand" style="gap:4px;padding:22px 20px 18px">
+        <span class="wordmark-stacked" style="font-size:24px;text-align:center">
+          <span class="ritual">Ritual</span>
+          <span class="runway">Runway</span>
+        </span>
+        <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.16em;text-transform:uppercase;color:var(--dim);margin-top:6px">Sign in to continue</div>
+      </div>
+      <div class="auth-form">
+        <div class="auth-input">Email address</div>
+        <div class="auth-input">Password</div>
+        <div class="auth-btn">Sign In</div>
+        <div class="auth-link">Don't have an account? <span style="color:var(--primary)">Sign up</span></div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Text only — current.</strong> Works at 24px, but loses the icon's premium quality and distinctive character.</div>
+  </div>
+
+  <!-- ── ROW 3: LANDING PAGE ── -->
+  <div class="row-label">Landing<br>Page</div>
+
+  <!-- A -->
+  <div class="cell">
+    <div class="landing-frame">
+      <div class="landing-nav">
+        <img src="assets/icon-dark.png" class="monogram-img" width="28" height="28" alt="RR" style="border-radius:6px">
+        <div class="landing-nav-links">
+          <span class="landing-nav-link">Pricing</span>
+          <span class="landing-nav-link">About</span>
+          <span style="font-family:var(--mono);font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(181,170,189,0.9);border:1px solid rgba(181,170,189,0.3);border-radius:999px;padding:4px 10px">Sign in</span>
+        </div>
+      </div>
+      <div class="landing-hero">
+        <img src="assets/rr-logo-light.png" width="72" height="72" alt="RR" style="border-radius:16px">
+        <div class="landing-tagline">Your money,<br><em>ritualised.</em></div>
+        <div class="landing-sub">Build a budgeting ritual around your actual pay cycle.</div>
+        <div class="landing-cta">Get started free</div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Nav: monogram. Hero: full lockup.</strong> The icon anchors the nav; the hero uses it at display size for impact. The mark does real work in both contexts.</div>
+  </div>
+
+  <!-- B -->
+  <div class="cell" style="border-left:1px solid var(--border)">
+    <div class="landing-frame">
+      <div class="landing-nav">
+        <div style="display:flex;align-items:center;gap:8px">
+          <img src="assets/icon-dark.png" class="monogram-img" width="24" height="24" alt="RR" style="border-radius:5px">
+          <span style="font-family:var(--serif);font-style:italic;font-size:15px;color:#fff;line-height:1"><span style="color:#B5AABD">Ritual</span> Runway</span>
+        </div>
+        <div class="landing-nav-links">
+          <span class="landing-nav-link">Pricing</span>
+          <span class="landing-nav-link">About</span>
+          <span style="font-family:var(--mono);font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(181,170,189,0.9);border:1px solid rgba(181,170,189,0.3);border-radius:999px;padding:4px 10px">Sign in</span>
+        </div>
+      </div>
+      <div class="landing-hero">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+          <img src="assets/rr-logo-light.png" width="48" height="48" alt="RR" style="border-radius:11px">
+          <span style="font-family:var(--serif);font-style:italic;font-size:28px;color:#26262B;line-height:1"><span style="color:#9B8EA0">Ritual</span> Runway</span>
+        </div>
+        <div class="landing-tagline" style="font-size:17px">Your money, <em>ritualised.</em></div>
+        <div class="landing-sub">Build a budgeting ritual around your actual pay cycle.</div>
+        <div class="landing-cta">Get started free</div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Inline lockup everywhere.</strong> Consistent but the nav gets busy and the hero feels like a brand guideline, not a welcome moment.</div>
+  </div>
+
+  <!-- C -->
+  <div class="cell" style="border-left:1px solid var(--border)">
+    <div class="landing-frame">
+      <div class="landing-nav">
+        <span style="font-family:var(--serif);font-style:italic;font-size:16px;color:#fff;line-height:1"><span style="color:#B5AABD">Ritual</span> Runway</span>
+        <div class="landing-nav-links">
+          <span class="landing-nav-link">Pricing</span>
+          <span class="landing-nav-link">About</span>
+          <span style="font-family:var(--mono);font-size:8.5px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(181,170,189,0.9);border:1px solid rgba(181,170,189,0.3);border-radius:999px;padding:4px 10px">Sign in</span>
+        </div>
+      </div>
+      <div class="landing-hero">
+        <div style="font-family:var(--serif);font-style:italic;font-size:32px;color:#26262B;line-height:1;margin-bottom:4px">
+          <span style="color:#9B8EA0">Ritual</span><br>Runway
+        </div>
+        <div class="landing-sub">Build a budgeting ritual around your actual pay cycle.</div>
+        <div class="landing-cta">Get started free</div>
+      </div>
+    </div>
+    <div class="cell-note"><strong>Text only — current.</strong> Wordmark in nav is small. Hero is just large text — misses the icon's luxury feel entirely.</div>
+  </div>
+
+</div>
+
+<!-- Verdict -->
+<div style="max-width:1100px;margin-top:40px;padding:24px;background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;gap:20px;align-items:flex-start">
+  <div style="font-family:var(--serif);font-style:italic;font-size:40px;color:var(--primary);line-height:1;flex-shrink:0">A</div>
+  <div>
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px">Recommendation</div>
+    <div style="font-size:14px;font-weight:400;color:var(--fg);margin-bottom:8px">Use Option A — context-sensitive placement</div>
+    <div style="font-size:13px;color:var(--muted);font-weight:300;line-height:1.65;max-width:700px">
+      The monogram is your strongest brand asset — it's distinctive, scales to any size, and feels luxury. Inside the app, users already know where they are, so the icon alone is enough and keeps the header clean. On the landing page and auth screens, the full lockup (icon + wordmark) does the job of introducing the brand to new users. Option B is valid but redundant once the mark is recognized. Option C leaves the icon on the shelf entirely.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

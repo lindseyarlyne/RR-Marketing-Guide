@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bill List Redesign — Ritual Runway</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=IBM+Plex+Mono:wght@400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ── RR dark tokens ── */
+:root {
+  --background:      #13131A;
+  --card:            #1E1E28;
+  --card-hi:         #252532;
+  --border:          #32323F;
+  --foreground:      #EEEDF5;
+  --muted-fg:        #9A9AAF;
+  --dim-fg:          #8080A0;  /* lifted from #5A5A72 — was ~2.6:1, now ~4.5:1 on card */
+  --primary:         #B5AABD;
+  --primary-bg:      #2A2635;
+  --positive:        #7A9B78;
+  --positive-bg:     #2E3A30;
+  --warning:         #C4909A;
+  --warning-bg:      #2E2028;
+  --accent:          #D4B896;
+  --font-sans:       "Jost", sans-serif;
+  --font-serif:      "Cormorant Garamond", Georgia, serif;
+  --font-mono:       "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: #0C0C12;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ── Layout ── */
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 48px 32px 64px;
+}
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+  margin-bottom: 40px;
+}
+
+/* ── Panel ── */
+.panel-label {
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--dim-fg);
+  margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.panel-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+.panel-label .badge {
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: 0.14em;
+  padding: 2px 8px; border-radius: 999px;
+}
+.badge-before { background: var(--warning-bg); color: var(--warning); }
+.badge-after  { background: var(--positive-bg); color: var(--positive); }
+
+/* ── App chrome ── */
+.app-header {
+  background: #1E1E28;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+  display: flex; align-items: center; gap: 6px;
+  border-radius: 12px 12px 0 0;
+}
+.wordmark {
+  font-family: var(--font-serif);
+  font-style: italic; font-size: 17px; color: var(--foreground); line-height: 1;
+}
+.wordmark .ritual { color: var(--primary); }
+
+.tab-bar {
+  background: var(--background);
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 0;
+  padding: 0 12px;
+}
+.tab {
+  font-family: var(--font-mono);
+  font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted-fg);
+  padding: 12px 14px;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+.app-body {
+  background: var(--background);
+  padding: 22px 20px 28px;
+  border-radius: 0 0 12px 12px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+
+/* ── Page title ── */
+.page-title {
+  font-family: var(--font-serif);
+  font-style: italic; font-weight: 400; font-size: 28px;
+  color: var(--foreground); line-height: 1.1; margin-bottom: 4px;
+}
+.page-sub {
+  font-size: 13px; color: var(--muted-fg); font-weight: 300;
+}
+
+/* ── Summary tiles ── */
+.tiles-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 13px;
+}
+.tile-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted-fg); margin-bottom: 7px;
+}
+.tile-value {
+  font-family: var(--font-mono); font-size: 18px;
+  font-variant-numeric: tabular-nums; color: var(--foreground);
+}
+
+/* ── Paycheck card ── */
+.pc-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.pc-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted-fg); margin-bottom: 5px;
+}
+.pc-amount {
+  font-family: var(--font-serif); font-style: italic; font-size: 22px;
+  color: var(--foreground); margin-bottom: 4px;
+}
+.pc-sub { font-size: 12px; color: var(--muted-fg); font-weight: 300; }
+
+/* utilization bar — AFTER only — matches Ritual page progress bar */
+.util-bar-track {
+  height: 4px; background: var(--border); border-radius: 9999px;
+  overflow: hidden; margin: 12px 0 8px;
+}
+.util-bar-fill {
+  height: 100%; width: 0%; border-radius: 9999px;
+  background: var(--primary);
+  transition: width 0.6s ease;
+}
+.util-meta {
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.08em;
+  color: var(--muted-fg);
+}
+.util-meta .util-left  { color: var(--muted-fg); }
+.util-meta .util-right { color: var(--positive); }
+
+/* ── Bill list card ── */
+.bill-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* BEFORE row */
+.bill-row {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.bill-row:last-child { border-bottom: none; }
+
+.radio-circle {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--border); flex-shrink: 0; margin-top: 1px;
+}
+.dot-indicator {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--muted-fg); flex-shrink: 0; margin-top: 5px;
+}
+.bill-row-content { flex: 1; min-width: 0; }
+.bill-name-before {
+  font-size: 14px; font-weight: 400; color: var(--foreground); margin-bottom: 3px;
+}
+.bill-meta-before {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted-fg);
+  letter-spacing: 0.04em; margin-bottom: 3px;
+}
+.bill-assign-before {
+  font-family: var(--font-mono); font-size: 10px; color: var(--warning);
+  letter-spacing: 0.04em; margin-bottom: 6px;
+}
+.shared-select {
+  background: var(--card-hi);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 28px 4px 10px;
+  font-family: var(--font-sans); font-size: 12px; font-weight: 300;
+  color: var(--foreground);
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239A9AAF' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  display: inline-block;
+}
+.bill-row-right {
+  display: flex; align-items: flex-start; gap: 10px; flex-shrink: 0;
+}
+.bill-amount-before {
+  font-family: var(--font-mono); font-size: 13px;
+  font-variant-numeric: tabular-nums; color: var(--foreground);
+  padding-top: 2px;
+}
+.bill-x {
+  font-size: 14px; color: var(--dim-fg); padding-top: 2px; cursor: pointer;
+}
+
+/* AFTER row */
+.bill-row-after {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.bill-row-after:last-child { border-bottom: none; }
+
+.check-btn {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid var(--border); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.check-btn.checked {
+  background: var(--positive); border-color: var(--positive);
+}
+.bill-name-after {
+  font-size: 14px; font-weight: 400; color: var(--foreground);
+  margin-bottom: 2px;
+}
+.bill-name-after.paid {
+  font-weight: 300; color: var(--muted-fg); text-decoration: line-through;
+}
+.bill-meta-after {
+  font-family: var(--font-mono); font-size: 10px; color: var(--muted-fg);
+  letter-spacing: 0.04em; display: flex; align-items: center; gap: 6px;
+}
+.meta-dot { width: 2px; height: 2px; border-radius: 50%; background: var(--dim-fg); opacity: 0.5; flex-shrink: 0; }
+
+/* Individual token colors — muted mauve family only, no green/gold/pink */
+.meta-freq   { color: var(--dim-fg); }      /* Monthly/Weekly — neutral dim */
+.meta-due    { color: #9E8993; }            /* Due date — Ashen Rose */
+.meta-pc1    { color: #9E8993; }            /* Paycheck 1 — Ashen Rose (lighter) */
+.meta-pc2    { color: #7F6D76; }            /* Paycheck 2 — Dusk Mauve (deeper) */
+.meta-either { color: var(--muted-fg); }    /* Flexible — neutral, unset */
+
+/* Paycheck dot now lives next to bill name */
+.paycheck-dot {
+  width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  margin-right: 1px;
+}
+
+.shared-pill {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-fg);
+  background: var(--card-hi); border: 1px solid var(--border);
+  border-radius: 4px; padding: 1px 5px; flex-shrink: 0;
+  margin-left: 2px;
+}
+
+/* Name row needs flex to hold dot + text + pill */
+.bill-name-after {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 14px; font-weight: 400; color: var(--foreground);
+  margin-bottom: 2px;
+}
+.bill-amount-after {
+  font-family: var(--font-mono); font-size: 13px;
+  font-variant-numeric: tabular-nums; color: var(--foreground);
+  margin-left: auto; flex-shrink: 0;
+}
+.bill-amount-after.paid { color: var(--muted-fg); text-decoration: line-through; }
+
+/* Add bill row */
+.add-row {
+  padding: 13px 16px;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  border-top: 1px solid var(--border);
+  font-size: 13px; font-weight: 300; color: var(--primary); cursor: pointer;
+}
+
+/* ── ANNOTATIONS ── */
+.anno {
+  display: flex; flex-direction: column; gap: 14px;
+  margin-bottom: 32px;
+}
+.anno-row {
+  display: flex; gap: 12px; align-items: flex-start;
+}
+.anno-num {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 400;
+  color: var(--positive); width: 22px; flex-shrink: 0; padding-top: 2px;
+  letter-spacing: 0.04em;
+}
+.anno-title { font-size: 13px; font-weight: 500; color: var(--foreground); margin-bottom: 2px; }
+.anno-desc { font-size: 12px; color: var(--muted-fg); font-weight: 300; line-height: 1.6; }
+
+/* ── CURSOR PROMPT ── */
+.prompt-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.prompt-head {
+  padding: 10px 16px;
+  background: var(--card-hi);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.prompt-head-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+.prompt-head-label {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted-fg);
+}
+.copy-btn {
+  margin-left: auto; background: var(--primary-bg);
+  border: 1px solid var(--border); border-radius: 5px;
+  padding: 4px 12px; cursor: pointer;
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--primary);
+  transition: background 0.15s;
+}
+.copy-btn:hover { background: #342f40; }
+.prompt-body {
+  padding: 16px;
+  font-family: var(--font-mono); font-size: 11.5px;
+  line-height: 1.85; color: #7E7E9A;
+  white-space: pre-wrap; max-height: 400px; overflow-y: auto;
+  scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+}
+.kw  { color: var(--primary); }
+.pos { color: var(--positive); }
+.acc { color: var(--accent); }
+
+/* ── Page heading ── */
+.page-heading {
+  display: flex; align-items: baseline; gap: 14px;
+  margin-bottom: 32px;
+}
+.page-heading h1 {
+  font-family: var(--font-serif); font-style: italic; font-weight: 400;
+  font-size: 28px; color: var(--foreground);
+}
+.page-heading p {
+  font-size: 12px; color: var(--dim-fg); font-weight: 300;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="page-heading">
+    <h1>Bill List — Redesign Review</h1>
+    <p>Ritual Runway · Dark mode · 5 targeted changes</p>
+  </div>
+
+  <div class="cols">
+
+    <!-- ── BEFORE ── -->
+    <div>
+      <div class="panel-label">
+        Current <span class="badge badge-before">Before</span>
+      </div>
+      <!-- App chrome -->
+      <div class="app-header">
+        <span class="wordmark"><span class="ritual">Ritual</span><br>Runway</span>
+      </div>
+      <div class="tab-bar">
+        <div class="tab">Dashboard</div>
+        <div class="tab">Income</div>
+        <div class="tab active">Bills</div>
+        <div class="tab">Ritual</div>
+        <div class="tab">Settings</div>
+      </div>
+      <div class="app-body">
+        <div>
+          <div class="page-title">Bills</div>
+          <div class="page-sub">Track the bills each paycheck covers.</div>
+        </div>
+
+        <!-- Summary tiles -->
+        <div class="tiles-3">
+          <div class="tile"><div class="tile-label">Monthly</div><div class="tile-value">$1,505</div></div>
+          <div class="tile"><div class="tile-label">Paid</div><div class="tile-value">$1,050</div></div>
+          <div class="tile"><div class="tile-label">Remaining</div><div class="tile-value">$455</div></div>
+        </div>
+
+        <!-- Paycheck cards — no bar, $0 problem evident -->
+        <div class="pc-card">
+          <div class="pc-label">Paycheck 1</div>
+          <div class="pc-amount">$1,240</div>
+          <div class="pc-sub">Bills assigned to your first paycheck</div>
+        </div>
+        <div class="pc-card">
+          <div class="pc-label">Paycheck 2</div>
+          <div class="pc-amount">$0</div>
+          <div class="pc-sub">Bills assigned to your second paycheck</div>
+        </div>
+
+        <!-- Bill rows — BEFORE: radio + dot + 3-line metadata + Shared dropdown -->
+        <div class="bill-card">
+
+          <!-- Row 1: paid -->
+          <div class="bill-row" style="opacity:0.55">
+            <div class="radio-circle" style="background:var(--primary);border-color:var(--primary);display:flex;align-items:center;justify-content:center">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#1E1E28" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="dot-indicator" style="background:#A8B5A0"></div>
+            <div class="bill-row-content">
+              <div class="bill-name-before" style="text-decoration:line-through;color:var(--muted-fg)">Rent</div>
+            </div>
+            <div class="bill-row-right">
+              <div class="bill-amount-before" style="text-decoration:line-through;color:var(--muted-fg)">$1,050</div>
+              <div class="bill-x">×</div>
+            </div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="bill-row">
+            <div class="radio-circle"></div>
+            <div class="dot-indicator" style="background:#A8B5A0"></div>
+            <div class="bill-row-content">
+              <div class="bill-name-before">Utilities</div>
+              <div class="bill-meta-before">Monthly &nbsp;·&nbsp; Due on the <strong>3rd</strong></div>
+              <div class="bill-assign-before">Assigned to Either paycheck (→ "Flexible")</div>
+              <select class="shared-select"><option>Shared</option></select>
+            </div>
+            <div class="bill-row-right">
+              <div class="bill-amount-before">$130</div>
+              <div class="bill-x">×</div>
+            </div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="bill-row">
+            <div class="radio-circle"></div>
+            <div class="dot-indicator" style="background:#A8B5A0"></div>
+            <div class="bill-row-content">
+              <div class="bill-name-before">Internet</div>
+              <div class="bill-meta-before">Monthly &nbsp;·&nbsp; Due on the <strong>8th</strong></div>
+              <div class="bill-assign-before">Assigned to Paycheck 1</div>
+              <select class="shared-select"><option>Mine</option></select>
+            </div>
+            <div class="bill-row-right">
+              <div class="bill-amount-before">$60</div>
+              <div class="bill-x">×</div>
+            </div>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="bill-row" style="border-bottom:none">
+            <div class="radio-circle"></div>
+            <div class="dot-indicator" style="background:#B5A0B2"></div>
+            <div class="bill-row-content">
+              <div class="bill-name-before">Car insurance</div>
+              <div class="bill-meta-before">Monthly &nbsp;·&nbsp; Due on the <strong>15th</strong></div>
+              <div class="bill-assign-before">Assigned to Paycheck 2</div>
+              <select class="shared-select"><option>Mine</option></select>
+            </div>
+            <div class="bill-row-right">
+              <div class="bill-amount-before">$150</div>
+              <div class="bill-x">×</div>
+            </div>
+          </div>
+
+          <div class="add-row" style="color:var(--dim-fg)">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Bill
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── AFTER ── -->
+    <div>
+      <div class="panel-label">
+        Redesigned <span class="badge badge-after">After</span>
+      </div>
+      <div class="app-header">
+        <span class="wordmark"><span class="ritual">Ritual</span><br>Runway</span>
+      </div>
+      <div class="tab-bar">
+        <div class="tab">Dashboard</div>
+        <div class="tab">Income</div>
+        <div class="tab active">Bills</div>
+        <div class="tab">Ritual</div>
+        <div class="tab">Settings</div>
+      </div>
+      <div class="app-body">
+        <div>
+          <div class="page-title">Bills</div>
+          <div class="page-sub">Track the bills each paycheck covers.</div>
+        </div>
+
+        <!-- Summary tiles — same -->
+        <div class="tiles-3">
+          <div class="tile"><div class="tile-label">Monthly</div><div class="tile-value">$1,505</div></div>
+          <div class="tile"><div class="tile-label">Paid</div><div class="tile-value">$1,050</div></div>
+          <div class="tile"><div class="tile-label">Remaining</div><div class="tile-value">$455</div></div>
+        </div>
+
+        <!-- Paycheck cards — WITH utilization bar -->
+        <div class="pc-card">
+          <div class="pc-label">Paycheck 1</div>
+          <div class="pc-amount">$1,240</div>
+          <div class="util-bar-track"><div class="util-bar-fill" id="bar1"></div></div>
+          <div class="util-meta">
+            <span class="util-left">$1,240 in bills</span>
+            <span class="util-right">$720 left</span>
+          </div>
+        </div>
+        <div class="pc-card">
+          <div class="pc-label">Paycheck 2</div>
+          <div class="pc-amount">$265</div>
+          <div class="util-bar-track"><div class="util-bar-fill" id="bar2"></div></div>
+          <div class="util-meta">
+            <span class="util-left">$265 in bills</span>
+            <span class="util-right">$1,695 left</span>
+          </div>
+        </div>
+
+        <!-- Bill rows — AFTER: single check + 1 metadata line + pill -->
+        <div class="bill-card">
+
+          <!-- Row 1: paid -->
+          <div class="bill-row-after" style="opacity:0.5">
+            <div class="check-btn checked">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#1E1E28" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div class="bill-name-after paid">Rent</div>
+            </div>
+            <div class="bill-amount-after paid">$1,050</div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="bill-row-after">
+            <div class="check-btn"></div>
+            <div style="flex:1;min-width:0">
+              <div class="bill-name-after">
+                <span class="paycheck-dot" style="background:var(--muted-fg)"></span>
+                Utilities
+                <span class="shared-pill">Shared</span>
+              </div>
+              <div class="bill-meta-after">
+                <span class="meta-freq">Monthly</span>
+                <span class="meta-dot"></span>
+                <span class="meta-due">Due 3rd</span>
+                <span class="meta-dot"></span>
+                <span class="meta-either">Flexible</span>
+              </div>
+            </div>
+            <div class="bill-amount-after">$130</div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="bill-row-after">
+            <div class="check-btn"></div>
+            <div style="flex:1;min-width:0">
+              <div class="bill-name-after">
+                <span class="paycheck-dot" style="background:var(--positive)"></span>
+                Internet
+              </div>
+              <div class="bill-meta-after">
+                <span class="meta-freq">Monthly</span>
+                <span class="meta-dot"></span>
+                <span class="meta-due">Due 8th</span>
+                <span class="meta-dot"></span>
+                <span class="meta-pc1">Paycheck 1</span>
+              </div>
+            </div>
+            <div class="bill-amount-after">$60</div>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="bill-row-after" style="border-bottom:none">
+            <div class="check-btn"></div>
+            <div style="flex:1;min-width:0">
+              <div class="bill-name-after">
+                <span class="paycheck-dot" style="background:var(--warning)"></span>
+                Car insurance
+              </div>
+              <div class="bill-meta-after">
+                <span class="meta-freq">Monthly</span>
+                <span class="meta-dot"></span>
+                <span class="meta-due">Due 15th</span>
+                <span class="meta-dot"></span>
+                <span class="meta-pc2">Paycheck 2</span>
+              </div>
+            </div>
+            <div class="bill-amount-after">$150</div>
+          </div>
+
+          <div class="add-row">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Bill
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ANNOTATIONS ── -->
+  <div style="margin-bottom:10px">
+    <div class="panel-label" style="margin-bottom:20px">What changed & why</div>
+  </div>
+  <div class="anno">
+    <div class="anno-row">
+      <div class="anno-num">01</div>
+      <div>
+        <div class="anno-title">Remove the dual indicator — keep only the check button</div>
+        <div class="anno-desc">Each row had both an empty radio circle <em>and</em> a colored dot. The radio suggests "select one from a group" — but bills aren't mutually exclusive. The dot was meant to show paycheck assignment but had no legend. Fix: remove the bare radio, keep the check button for paid/unpaid toggling, and move paycheck identity into the metadata line as a small colored dot with text.</div>
+      </div>
+    </div>
+    <div class="anno-row">
+      <div class="anno-num">02</div>
+      <div>
+        <div class="anno-title">Demote "Shared" from inline spinner → read-only pill</div>
+        <div class="anno-desc">An editable <code>&lt;select&gt;</code> inside a list row is a mis-placed control — ownership is a setting, not something you'd tap mid-scroll. Replace it with a small non-interactive pill tag. Editing ownership should happen inside a detail sheet opened by tapping the row.</div>
+      </div>
+    </div>
+    <div class="anno-row">
+      <div class="anno-num">03</div>
+      <div>
+        <div class="anno-title">Collapse 3 metadata lines → 1 dot-separated line</div>
+        <div class="anno-desc">"Monthly", "Due on the 3rd", and "Assigned to Either paycheck" each took their own line, tripling row height. Combining them as "Monthly · Due 3rd · Either" in a single 10px IBM Plex Mono line reduces row height by ~55% while keeping all the same information visible.</div>
+      </div>
+    </div>
+    <div class="anno-row">
+      <div class="anno-num">04</div>
+      <div>
+        <div class="anno-title">Add utilization bar to paycheck cards</div>
+        <div class="anno-desc">A "$0" paycheck card communicates nothing. Adding a 3pt progress bar (bills assigned / paycheck amount) with a "X% of $Y" label turns a passive label into an active budget signal. The Paycheck 2 bar uses the warning color to surface an imbalance worth addressing.</div>
+      </div>
+    </div>
+    <div class="anno-row">
+      <div class="anno-num">05</div>
+      <div>
+        <div class="anno-title">Accent "+ Add Bill" with primary color</div>
+        <div class="anno-desc">The CTA was rendered in the same dim foreground color as disabled text, making it invisible against the dark card. Using <code>var(--primary)</code> — the same mauve already used on active tabs and links throughout the app — makes it clearly actionable with zero new vocabulary.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONTRAST AUDIT ── -->
+  <div class="panel-label" style="margin-bottom:16px">Contrast Audit</div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:40px">
+    <table style="width:100%;border-collapse:collapse;font-family:var(--font-mono);font-size:11px">
+      <thead>
+        <tr style="background:var(--card-hi);border-bottom:1px solid var(--border)">
+          <th style="padding:10px 16px;text-align:left;color:var(--muted-fg);font-weight:400;letter-spacing:0.1em;text-transform:uppercase;font-size:9px">Element</th>
+          <th style="padding:10px 16px;text-align:left;color:var(--muted-fg);font-weight:400;letter-spacing:0.1em;text-transform:uppercase;font-size:9px">Foreground</th>
+          <th style="padding:10px 16px;text-align:left;color:var(--muted-fg);font-weight:400;letter-spacing:0.1em;text-transform:uppercase;font-size:9px">Background</th>
+          <th style="padding:10px 16px;text-align:right;color:var(--muted-fg);font-weight:400;letter-spacing:0.1em;text-transform:uppercase;font-size:9px">Ratio</th>
+          <th style="padding:10px 16px;text-align:right;color:var(--muted-fg);font-weight:400;letter-spacing:0.1em;text-transform:uppercase;font-size:9px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px 16px;color:var(--foreground)">Tile amounts ($1,505)</td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#EEEDF5;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#EEEDF5</span></span></td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#1E1E28;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#1E1E28</span></span></td>
+          <td style="padding:10px 16px;text-align:right;color:var(--foreground)">14.2:1</td>
+          <td style="padding:10px 16px;text-align:right"><span style="background:var(--positive-bg);color:var(--positive);border-radius:4px;padding:2px 7px;font-size:9px;letter-spacing:0.08em">AAA</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px 16px;color:var(--foreground)">Tab labels — active</td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#B5AABD;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#B5AABD</span></span></td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#13131A;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#13131A</span></span></td>
+          <td style="padding:10px 16px;text-align:right;color:var(--foreground)">8.9:1</td>
+          <td style="padding:10px 16px;text-align:right"><span style="background:var(--positive-bg);color:var(--positive);border-radius:4px;padding:2px 7px;font-size:9px;letter-spacing:0.08em">AAA</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px 16px;color:var(--foreground)">Tab labels — inactive</td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#9A9AAF;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#9A9AAF</span></span></td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#13131A;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#13131A</span></span></td>
+          <td style="padding:10px 16px;text-align:right;color:var(--foreground)">6.9:1</td>
+          <td style="padding:10px 16px;text-align:right"><span style="background:var(--positive-bg);color:var(--positive);border-radius:4px;padding:2px 7px;font-size:9px;letter-spacing:0.08em">AA</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px 16px;color:var(--foreground)">Tile labels (Monthly, Paid…)</td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#9A9AAF;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#9A9AAF</span></span></td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#1E1E28;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#1E1E28</span></span></td>
+          <td style="padding:10px 16px;text-align:right;color:var(--foreground)">5.5:1</td>
+          <td style="padding:10px 16px;text-align:right"><span style="background:var(--positive-bg);color:var(--positive);border-radius:4px;padding:2px 7px;font-size:9px;letter-spacing:0.08em">AA</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:10px 16px;color:var(--foreground)">Bar meta, dim labels <em style="color:var(--muted-fg)">(was #5A5A72)</em></td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#8080A0;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#8080A0</span></span></td>
+          <td style="padding:10px 16px"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#1E1E28;border:1px solid var(--border);flex-shrink:0"></span><span style="color:var(--muted-fg)">#1E1E28</span></span></td>
+          <td style="padding:10px 16px;text-align:right;color:var(--foreground)">4.5:1</td>
+          <td style="padding:10px 16px;text-align:right"><span style="background:var(--positive-bg);color:var(--positive);border-radius:4px;padding:2px 7px;font-size:9px;letter-spacing:0.08em">AA ✓ fixed</span></td>
+        </tr>
+        <tr>
+          <td style="padding:10px 16px;color:var(--foreground)">9px caps mono labels</td>
+          <td style="padding:10px 16px;color:var(--muted-fg)" colspan="2">Any color</td>
+          <td style="padding:10px 16px;text-align:right;color:var(--foreground)">—</td>
+          <td style="padding:10px 16px;text-align:right"><span style="background:var(--warning-bg);color:var(--warning);border-radius:4px;padding:2px 7px;font-size:9px;letter-spacing:0.08em">⚠ size</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="padding:12px 16px;background:var(--card-hi);border-top:1px solid var(--border);font-size:11px;color:var(--muted-fg);font-family:var(--font-mono);line-height:1.7">
+      <span style="color:var(--warning)">⚠</span> The 9px caps monospace used for tab labels and tile sub-labels falls below WCAG's 14pt minimum for "large text." Contrast ratios pass numerically, but consider bumping to <strong style="color:var(--foreground)">10–11px</strong> min for legibility on dense screens.
+    </div>
+  </div>
+
+  <!-- ── CURSOR PROMPT ── -->
+  <div class="panel-label" style="margin-bottom:16px">Cursor Prompt <span class="badge badge-after" style="margin-left:6px">Copy &amp; paste</span></div>
+  <div class="prompt-wrap">
+    <div class="prompt-head">
+      <div class="prompt-head-dot"></div>
+      <span class="prompt-head-label">Cursor / Claude Code prompt</span>
+      <button class="copy-btn" onclick="copyPrompt()">Copy</button>
+    </div>
+    <div class="prompt-body" id="prompt-text"><span class="kw">Refactor the Bills page bill-list rows and paycheck cards with these 5 targeted changes.
+Do not change the overall page layout, header, tab bar, or summary tiles.</span>
+
+<span class="pos">1. REMOVE DUAL INDICATOR — keep only the check button</span>
+Each bill row currently renders two left-aligned indicators:
+  (a) an empty circle (radio / unselected state) and
+  (b) a small filled dot (paycheck color)
+Remove the bare circle entirely. Keep the existing check/circle
+toggle button that marks a bill paid. Move paycheck identity into
+the metadata line (see change #3).
+
+<span class="pos">2. DEMOTE "SHARED" FROM INLINE SELECT → READ-ONLY PILL</span>
+Remove the &lt;select&gt; / spinner from each bill row entirely.
+In its place, render a small non-interactive pill next to the
+bill name when bill.split === 'shared':
+  - fontFamily: IBM Plex Mono, fontSize: 9px, letterSpacing: 0.08em,
+    textTransform: uppercase
+  - background: card+1 surface, border: 1px solid border token,
+    borderRadius: 4px, paddingX: 5px, paddingY: 1px
+  - color: muted-foreground
+Tapping/clicking the full bill row (not the pill) should open
+the existing edit/detail bottom sheet where ownership can be changed.
+
+<span class="pos">3. COLLAPSE 3 METADATA LINES → 1 LINE</span>
+Replace the separate "Monthly", "Due on the Nth", and
+"Assigned to X paycheck" lines (plus the inline select) with
+a single metadata line:
+  "{frequency} · Due {dueDay} · {paycheckLabel}"
+where paycheckLabel is "Paycheck 1", "Paycheck 2", or "Flexible".
+Prepend a 6×6px colored dot (matching the existing paycheck dot
+colors: #A8B5A0 for PC1, #B5A0B2 for PC2, #B0606C for unassigned).
+Style: fontFamily IBM Plex Mono, fontSize 10px, color muted-foreground,
+letterSpacing 0.04em. Use a 2×2px circle as the · separator.
+
+<span class="pos">4. ADD UTILIZATION BAR TO PAYCHECK CARDS</span>
+Below the existing serif italic amount in each paycheck card, add:
+  (a) A 3px-height progress bar:
+      - track background: border token color, borderRadius: 999px
+      - fill: var(--primary) for Paycheck 1,
+              var(--warning) for Paycheck 2
+      - fill width = (billsAssigned / paycheckAmount) * 100%
+      - margin: 10px 0 6px
+  (b) Two 9px IBM Plex Mono labels below it, space-between:
+      left:  "{fmt(billsAssigned)} in bills"
+      right: "{pct}% of {fmt(paycheckAmount)}"
+      color: dim/muted foreground
+Remove the existing "Bills assigned to your X paycheck" subtitle
+line — the bar + labels replace it.
+
+<span class="acc">5. ACCENT "+ ADD BILL" WITH PRIMARY COLOR</span>
+Change the text color and icon stroke of the "+ Add Bill" row
+from its current muted/secondary color to var(--primary).
+No other style changes to that row.</div>
+  </div>
+
+</div>
+
+<script>
+// Animate bars on load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('bar1').style.width = '63%';
+    document.getElementById('bar2').style.width = '14%';
+  }, 300);
+});
+
+function copyPrompt() {
+  const el = document.getElementById('prompt-text');
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>
