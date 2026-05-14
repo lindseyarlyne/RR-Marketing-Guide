@@ -25,12 +25,56 @@ Local remotes after a rename:
 git remote set-url origin https://github.com/<you>/<new-repo-name>.git
 ```
 
+## Repository layout
+
+```
+.
+├── index.html
+├── canva-cheat-sheet.html
+├── ritual-runway-design-system-2.zip
+├── rr-design-docs/          ← design system HTML + logo exports
+├── artifacts/
+│   ├── outreach-kit.jsx     ← beta outreach, interview script, survey, checklist
+│   └── claude-cheat-sheet.jsx
+└── founder-docs/
+    ├── project-system-prompt.md
+    ├── claude-workflow-guide.md
+    ├── claude-desktop-plugins.md
+    ├── etsy-product-spec.md
+    └── file-organization.md
+```
+
 ## Contents
 
-Add PDFs, images, HTML, or Markdown here. For a simple browsable site, keep an `index.html` at the repo root (or configure Vercel’s “Root Directory” to a subfolder if you prefer).
-
-| File | Description |
+| Path | Description |
 |------|-------------|
-| `canva-cheat-sheet.html` | Brand reference for Canva: palette, typography, components. Open in a browser; path on deploy is `/canva-cheat-sheet.html`. |
-| `ritual-runway-design-system-2.zip` | Archived design system export (HTML docs + `logo-exports/`). Download from the repo or `/ritual-runway-design-system-2.zip` when deployed. |
-| `rr-design-docs/` | Extracted design system: static HTML references and PNG logo exports (served under `/rr-design-docs/…` when deployed). |
+| `canva-cheat-sheet.html` | Brand reference for Canva: palette, typography, components. Served at `/canva-cheat-sheet.html` when deployed. |
+| `ritual-runway-design-system-2.zip` | Archived design system export (HTML docs + `logo-exports/`). `/ritual-runway-design-system-2.zip` when deployed. |
+| `rr-design-docs/` | Extracted design system: static HTML references and PNG logo exports. |
+| `artifacts/` | Interactive React components—open in Claude as artifacts or run locally. |
+| `founder-docs/` | Markdown references for Claude Projects and day-to-day founder workflows. |
+
+## Artifacts
+
+Interactive React components. Open in Claude.ai as artifacts or run locally.
+
+- **Outreach Kit** (`artifacts/outreach-kit.jsx`) — Beta outreach, interview script, survey, and launch checklist. Updated May 2026.
+- **Claude Cheat Sheet** (`artifacts/claude-cheat-sheet.jsx`) — Claude surfaces, extensions, and power features with pro tips.
+
+> Role Guide, Content Hub, Expert Prompts, and Git Cheat Sheet are pending rebuild; they will be added here when complete.
+
+## Founder docs
+
+Plain Markdown. Reference in-repo, add to a Claude Project, or open from the deployed site.
+
+| File | Purpose |
+|------|---------|
+| `founder-docs/project-system-prompt.md` | Paste into Claude Project system prompt field |
+| `founder-docs/claude-workflow-guide.md` | One conversation = one task; plugins and roles |
+| `founder-docs/claude-desktop-plugins.md` | Which desktop plugins to use and when |
+| `founder-docs/etsy-product-spec.md` | Paycheck Budget Worksheet build spec for Canva + Etsy |
+| `founder-docs/file-organization.md` | Where files live across iCloud, Notion, GitHub, Claude |
+
+---
+
+*Ritual Runway — Solo Founder OS · Last updated May 2026*
