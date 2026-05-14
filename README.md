@@ -13,6 +13,8 @@ Use **Vercel** as a second project (same account as the main app is fine):
 
 Every push to `main` updates the live site automatically. You get a `*.vercel.app` URL with no custom domain required.
 
+**Founder OS (Next.js):** add a second Vercel project (or monorepo app) with root directory `founder-dashboard`, framework **Next.js**, and the env vars from `founder-dashboard/.env.example`. Set `NEXT_PUBLIC_FOUNDER_OS_URL` on the main Ritual Runway Vercel project to that deployment URL so `/founder` links straight to it.
+
 ## Rename this repository on GitHub
 
 1. On GitHub: **Settings** → **General** → **Repository name**.
@@ -29,6 +31,7 @@ git remote set-url origin https://github.com/<you>/<new-repo-name>.git
 
 ```
 .
+├── founder-dashboard/       ← Next.js Founder OS (tasks, metrics, Supabase) — see founder-dashboard/README.md
 ├── index.html
 ├── canva-cheat-sheet.html
 ├── ritual-runway-design-system-2.zip
@@ -53,6 +56,7 @@ git remote set-url origin https://github.com/<you>/<new-repo-name>.git
 | `rr-design-docs/` | Extracted design system: static HTML references and PNG logo exports. |
 | `artifacts/` | Interactive React components—open in Claude as artifacts or run locally. |
 | `founder-docs/` | Markdown references for Claude Projects and day-to-day founder workflows. |
+| `founder-dashboard/` | **Next.js app:** founder-only dashboard (tasks, metrics, outreach). Same Supabase project as ritualrunway.com; deploy separately (see `founder-dashboard/README.md`). |
 
 ## Artifacts
 

@@ -1,0 +1,389 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* Sticky stacking under app header (md+) */
+  --header-height: 56px;
+  --secondary-tools-nav-height: 0px;
+
+  /* Runway Design System Colors */
+  --background: #F2F0F5;
+  --foreground: #26262B;
+  --card: #FDFAF6;
+  --card-foreground: #26262B;
+  --popover: #FDFAF6;
+  --popover-foreground: #26262B;
+  --primary: #9B8EA0;
+  --primary-foreground: #FFFFFF;
+  --secondary: #9B8EA0;
+  --secondary-foreground: #3D3D3D;
+  --muted: #E5E0DA;
+  --muted-foreground: #5A4F47;
+  --accent: #B8B3AC;
+  --accent-foreground: #3D3D3D;
+  --destructive: #C75050;
+  --destructive-foreground: #FFFFFF;
+  --border: #D8D3C9;
+  --input: #D8D3C9;
+  --ring: #9B8EA0;
+  
+  /* Header */
+  --header: #2A2A2E;
+  --header-foreground: #FFFFFF;
+  
+  /* Pill button active */
+  --pill-active: #9B8EA0;
+  --pill-active-foreground: #FFFFFF;
+
+  /* Semantic status */
+  --positive: #A8B5A0;
+  --positive-light: #EDF2EE;
+  --warning: #8B7E8C;
+  --warning-light: #F0E8EC;
+
+  /* Extended status tokens */
+  --positive-muted: #8B9C84;
+  --warning-strong: #C0705A;
+  --status-amber: #B5956A;
+  --status-info: #6A8FA0;
+  --positive-alt: #A8B5A0;
+  
+  --radius: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 80px;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-jost), 'Jost', sans-serif;
+  --font-serif: var(--font-cormorant), 'Cormorant Garamond', serif;
+  --font-mono-accent: var(--font-ibm-plex-mono), 'IBM Plex Mono', monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-header: var(--header);
+  --color-header-foreground: var(--header-foreground);
+  --color-pill-active: var(--pill-active);
+  --color-pill-active-foreground: var(--pill-active-foreground);
+  --color-positive: var(--positive);
+  --color-positive-muted: var(--positive-muted);
+  --color-warning-strong: var(--warning-strong);
+  --color-status-amber: var(--status-amber);
+  --color-status-info: var(--status-info);
+  --color-positive-alt: var(--positive-alt);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-weight: 300;
+  }
+  input,
+  textarea,
+  [contenteditable] {
+    caret-color: var(--primary);
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 40px var(--background) inset !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+    caret-color: var(--primary) !important;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+}
+
+.runway-card {
+  background-color: var(--header);
+}
+
+/* Landing phone mockups: scoped dark-cool tokens (parent page may be light) */
+.landing-mockup-preview {
+  --background: #13131a;
+  --card: #1e1e28;
+  --border: #32323f;
+  --foreground: #eeedf5;
+  --muted-foreground: #8a8a9e;
+  --header: #1e1e28;
+  --header-foreground: #eeedf5;
+  --primary: #b5aabd;
+  --primary-foreground: #1e1e28;
+  --positive: #a8b5a0;
+  --warning: #a89aa8;
+  --accent: #b8b3ac;
+  --card-foreground: #eeedf5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --background: #13131A;
+    --card: #1E1E28;
+    --popover: #1E1E28;
+    --popover-foreground: #EEEDF5;
+    --header: #1E1E28;
+    --foreground: #EEEDF5;
+    --card-foreground: #EEEDF5;
+    --muted: #13131A;
+    --muted-foreground: #9A9AAF;
+    --primary: #B5AABD;
+    --primary-foreground: #1E1E28;
+    --secondary: #B5AABD;
+    --border: #32323F;
+    --input: #1E1E28;
+    --positive: #A8B5A0;
+    --positive-light: #2E3A30;
+    --warning: #A89AA8;
+    --warning-light: #2E2028;
+    --runway-card: #252532;
+    --positive-muted: #8B9C84;
+    --warning-strong: #C0705A;
+    --status-amber: #B5956A;
+    --status-info: #6A8FA0;
+    --positive-alt: #A8B5A0;
+    --accent: #B8B3AC;
+    --accent-foreground: #3D3D3D;
+  }
+
+  .runway-card {
+    background-color: var(--runway-card);
+  }
+
+  input::placeholder,
+  textarea::placeholder,
+  select::placeholder {
+    color: rgba(237, 232, 224, 0.4);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #13131A;
+  --card: #1E1E28;
+  --popover: #1E1E28;
+  --popover-foreground: #EEEDF5;
+  --header: #1E1E28;
+  --foreground: #EEEDF5;
+  --card-foreground: #EEEDF5;
+  --muted: #13131A;
+  --muted-foreground: #9A9AAF;
+  --primary: #B5AABD;
+  --primary-foreground: #1E1E28;
+  --secondary: #B5AABD;
+  --border: #32323F;
+  --input: #1E1E28;
+  --positive: #A8B5A0;
+  --positive-light: #2E3A30;
+  --warning: #A89AA8;
+  --warning-light: #2E2028;
+  --runway-card: #252532;
+  --positive-muted: #8B9C84;
+  --warning-strong: #C0705A;
+  --status-amber: #B5956A;
+  --status-info: #6A8FA0;
+  --positive-alt: #A8B5A0;
+  --accent: #B8B3AC;
+  --accent-foreground: #3D3D3D;
+}
+
+:root[data-theme="dark"] .runway-card {
+  background-color: var(--runway-card);
+}
+
+:root[data-theme="light"] {
+  --background: #F2F0F5;
+  --card: #FDFAF6;
+  --popover: #FDFAF6;
+  --popover-foreground: #26262B;
+  --header: #2A2A2E;
+  --foreground: #26262B;
+  --card-foreground: #26262B;
+  --muted: #E5E0DA;
+  --muted-foreground: #5A4F47;
+  --primary: #9B8EA0;
+  --secondary: #9B8EA0;
+  --border: #C8C2B8;
+  --input: #D8D3C9;
+  --positive: #A8B5A0;
+  --positive-light: #EDF2EE;
+  --warning: #8B7E8C;
+  --warning-light: #F0E8EC;
+  --accent: #B8B3AC;
+  --accent-foreground: #3D3D3D;
+  --ring: #9B8EA0;
+  --radius: 0.75rem;
+  --positive-muted: #8B9C84;
+  --warning-strong: #C0705A;
+  --status-amber: #B5956A;
+  --status-info: #6A8FA0;
+  --positive-alt: #A8B5A0;
+}
+
+/* Editable field hover effect */
+.editable-field {
+  @apply cursor-pointer transition-all duration-150 bg-transparent;
+}
+
+.editable-field:hover {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 60%, transparent);
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
+}
+
+/* Small labels style */
+.label-small {
+  font-family: var(--font-mono-accent);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  @apply text-muted-foreground;
+}
+
+/* Global placeholder styles — adaptive to theme */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-style: normal;
+  color: color-mix(in srgb, var(--foreground) 35%, transparent);
+}
+
+/* Landing page dark-mode lock — overrides all CSS custom props for descendants */
+.dark-page {
+  color-scheme: dark;
+  --background: #13131A;
+  --card: #1E1E28;
+  --popover: #1E1E28;
+  --popover-foreground: #EEEDF5;
+  --header: #1E1E28;
+  --header-foreground: #FFFFFF;
+  --foreground: #EEEDF5;
+  --card-foreground: #EEEDF5;
+  --muted: #13131A;
+  --muted-foreground: #9A9AAF;
+  --primary: #B5AABD;
+  --primary-foreground: #1E1E28;
+  --secondary: #B5AABD;
+  --secondary-foreground: #EEEDF5;
+  --border: #32323F;
+  --input: #1E1E28;
+  --ring: #B5AABD;
+  --destructive: #C75050;
+  --destructive-foreground: #FFFFFF;
+  --accent: #B8B3AC;
+  --accent-foreground: #3D3D3D;
+  --positive: #A8B5A0;
+  --positive-light: #2E3A30;
+  --positive-muted: #8B9C84;
+  --warning: #A89AA8;
+  --warning-light: #2E2028;
+  --warning-strong: #C0705A;
+  --runway-card: #252532;
+  --status-amber: #B5956A;
+  --status-info: #6A8FA0;
+  --positive-alt: #A8B5A0;
+  --pill-active: #B5AABD;
+  --pill-active-foreground: #1E1E28;
+}
+
+.dark-page .runway-card {
+  background-color: var(--runway-card);
+}
+
+/* Landing pricing: one-shot fade-in on paint (no scroll / observer). */
+@keyframes rr-pricing-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.rr-pricing-cards {
+  opacity: 0;
+  animation: rr-pricing-fade-in 0.65s ease-out 0.08s forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rr-pricing-cards {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+.bottom-nav button span {
+  letter-spacing: 0;
+}
+
+.pricing-card {
+  border-radius: 12px;
+}
+
+.system-card {
+  border-radius: 12px;
+}
+
+button.btn-ghost,
+a.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  color: var(--muted-foreground);
+  font-family: var(--font-mono-accent);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.5rem 0.75rem;
+  text-decoration: none;
+  transition:
+    color 150ms ease,
+    border-color 150ms ease,
+    background-color 150ms ease;
+}
+
+button.btn-ghost:hover,
+a.btn-ghost:hover {
+  color: var(--primary);
+  border-color: color-mix(in srgb, var(--primary) 45%, transparent);
+}
+
+@utility font-mono-accent {
+  font-family: var(--font-mono-accent);
+}
